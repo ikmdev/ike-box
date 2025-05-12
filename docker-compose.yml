@@ -44,19 +44,19 @@ services:
 
   nginx:
     build:
-      context: .
+      context: ../ikmdev-site
       dockerfile: docker/Dockerfile-nginx
     container_name: nginx
     ports:
-      - "${NGINX_PORT:-80}:80"
+      - "${NGINX_PORT:-8080}:80"
     volumes:
-      - ./docker/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./docker/nginx-logs:/var/log/nginx
+      - ../ikmdev-site/docker/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ../ikmdev-site/docker/nginx-logs:/var/log/nginx
     depends_on:
       - nexus
     
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:${NGINX_PORT:-80}/"]
+      test: ["CMD", "curl", "-f", "http://localhost:${NGINX_PORT:-8080}/"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -71,7 +71,6 @@ services:
 
 volumes:
   nexus-data:
-  komet-data:
   nginx-logs:
     driver: local
   gitea_data:
