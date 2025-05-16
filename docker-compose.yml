@@ -2,6 +2,8 @@ services:
   nexus:
     image: sonatype/nexus3
     container_name: nexus
+    ports:
+      - "${NEXUS_PORT:-8081}:8081"
     volumes:
       - nexus-data:/nexus-data
     healthcheck:
@@ -33,9 +35,6 @@ services:
       - GITEA__admin__USER=admin
       - GITEA__admin__PASSWORD=admin
       - GITEA__admin__EMAIL=admin@example.com
-#    ports:
-#      - "3000:3000"
-#      - "2222:22"
     volumes:
       - gitea_data:/data
     networks:
@@ -44,19 +43,19 @@ services:
 
   nginx:
     build:
-      context: ../ikmdev-site
+      context: .
       dockerfile: docker/Dockerfile-nginx
     container_name: nginx
     ports:
-      - "${NGINX_PORT:-8080}:80"
+      - "${NGINX_PORT:-80}:80"
     volumes:
-      - ../ikmdev-site/docker/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ../ikmdev-site/docker/nginx-logs:/var/log/nginx
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx-logs:/var/log/nginx
     depends_on:
       - nexus
     
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:${NGINX_PORT:-8080}/"]
+      test: ["CMD", "curl", "-f", "http://localhost:${NGINX_PORT:-80}/"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -72,7 +71,7 @@ services:
 volumes:
   nexus-data:
   nginx-logs:
-    driver: local
+    driver: bridge
   gitea_data:
 
 networks:
