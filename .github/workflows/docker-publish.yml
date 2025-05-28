@@ -23,18 +23,18 @@ jobs:
 
       - name: Build and push nexus Image
         run: |
-         docker build -t ${{ secrets.DOCKER_USERNAME }}/nexus:${{ github.ref_name }} ./docker/Dockerfile-nginx
+         docker build -t ${{ secrets.DOCKER_USERNAME }}/nexus:${{ github.ref_name }} .
          docker push ${{ secrets.DOCKER_USERNAME }}/nexus:${{ github.ref_name }}
 
       - name: Build and push gitea Image
         run: |
-         docker build -t ${{ secrets.DOCKER_USERNAME }}/gitea:${{ github.ref_name }} ./docker/Dockerfile-nginx
+         docker build -t ${{ secrets.DOCKER_USERNAME }}/gitea:${{ github.ref_name }} .
          docker push ${{ secrets.DOCKER_USERNAME }}/gitea:${{ github.ref_name }}
 
 
       - name: Build and push nginx Image
         run: |
-         docker build -t ${{ secrets.DOCKER_USERNAME }}/nginx:${{ github.ref_name }} ./docker/Dockerfile-nginx
+         docker build -t ${{ secrets.DOCKER_USERNAME }}/nginx:${{ github.ref_name }} .
          docker push ${{ secrets.DOCKER_USERNAME }}/nginx:${{ github.ref_name }}
 
 
