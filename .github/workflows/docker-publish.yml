@@ -21,15 +21,27 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: Build Docker Image
+      - name: Build and push nexus Image
         run: |
-           docker compose -f docker-compose.yml build
-           docker compose -f docker-compose.yml push
+         docker build -t ${{ secrets.DOCKER_USERNAME }}/nexus:${{ github.ref_name }} .
+         docker push ${{ secrets.DOCKER_USERNAME }}/nexus:${{ github.ref_name }}
 
-      - name: Deploy with Docker Compose
+      - name: Build and push gitea Image
         run: |
-            docker compose -f docker-compose.yml up -d
-  
+         docker build -t ${{ secrets.DOCKER_USERNAME }}/gitea:${{ github.ref_name }} .
+         docker push ${{ secrets.DOCKER_USERNAME }}/gitea:${{ github.ref_name }}
+
+
+      - name: Build and push nginx Image
+        run: |
+         docker build -t ${{ secrets.DOCKER_USERNAME }}/nginx:${{ github.ref_name }} .
+         docker push ${{ secrets.DOCKER_USERNAME }}/nginx:${{ github.ref_name }}
+
+
+
+
+
+      
 
 
 
