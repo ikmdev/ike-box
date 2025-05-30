@@ -1,17 +1,16 @@
-name: Build and Publish ikebox infrastructure
+name: Build and Publish Nginx image
 
 on:
   workflow_dispatch:
   push:
-   tags:
-      - '*'
+    tags:
+      - "*"
 
 jobs:
   build:
     runs-on: ubuntu-24.04
 
     steps:
-        
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -21,29 +20,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: Build and push nexus Image
-        run: |
-         docker build -t ${{ secrets.DOCKER_USERNAME }}/nexus:${{ github.ref_name }} .
-         docker push ${{ secrets.DOCKER_USERNAME }}/nexus:${{ github.ref_name }}
-
-      - name: Build and push gitea Image
-        run: |
-         docker build -t ${{ secrets.DOCKER_USERNAME }}/gitea:${{ github.ref_name }} .
-         docker push ${{ secrets.DOCKER_USERNAME }}/gitea:${{ github.ref_name }}
-
-
       - name: Build and push nginx Image
         run: |
-         docker build -t ${{ secrets.DOCKER_USERNAME }}/nginx:${{ github.ref_name }} .
-         docker push ${{ secrets.DOCKER_USERNAME }}/nginx:${{ github.ref_name }}
-
-
-
-
-
-      
-
-
-
-
- 
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/nginx:${{ github.ref_name }} .
+          docker push ${{ secrets.DOCKER_USERNAME }}/nginx:${{ github.ref_name }}
