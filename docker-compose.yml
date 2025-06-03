@@ -2,8 +2,6 @@ services:
   nexus:
     image: sonatype/nexus3
     container_name: nexus
-    # ports:
-    #   - "${NEXUS_PORT:-8081}:8081"
     volumes:
       - nexus-data:/nexus-data
     healthcheck:
