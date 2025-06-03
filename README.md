@@ -34,30 +34,33 @@ Follow the steps below to build and run static website on your local machine:
 
 3. Enter the following command to execute startup all of the applications:
 
-```bash
-docker-compose up -d 
-```
+  ```bash
+  docker-compose up -d 
+  ```
 
-4. To view the application, open your web browser and navigate to: http://localhost
+4. To view the applications directly open your web browser and navigate to: 
+* Komet: http://localhost:8080
+* Nexus: http://localhost:8081
 
-```bash
+
 5. To shut down the applications, run the following command:
 
-```bash
-docker-compose down
-```
+  ```bash
+  docker-compose down
+  ```
 
-The application should now be running in the Docker container. Access it by navigating to
-[http://localhost](http://localhost) in your web browser. If running on a remote server, replace localhost with
+The application should now be running in the Docker container using Nginx as Reverse Proxy with the path based routing can be access as:
+
+[localhost/nexus](http://localhost/nexus) and [localhost/komet](http://localhost/komet) in your web browser. If running on a remote server, replace localhost with
 the server’s IP address.
 
 Note: On the off chance that you have issues with running on the specific port on your computer, the
 docker-compose file is configurable to allow for other ports.  This can be run in the following way, substituting 8080
 for whatever port you would like to assign:
 
-   ```bash
-   NGINX_PORT=8080 docker compose up -d
-   ```
+```bash
+NGINX_PORT=8080 docker compose up -d
+```
 
 ## Running on a Server
 
