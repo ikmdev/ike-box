@@ -38,9 +38,7 @@ Follow the steps below to build and run static website on your local machine:
   docker-compose up -d 
   ```
 
-4. To view the applications directly open your web browser and navigate to: 
-* Komet: http://localhost:8080
-* Nexus: http://localhost:8081
+4. To view the applications directly open your web browser and navigate to: http://localhost
 
 
 5. To shut down the applications, run the following command:
@@ -53,6 +51,9 @@ The application should now be running in the Docker container using Nginx as Rev
 
 [localhost/nexus](http://localhost/nexus) and [localhost/komet](http://localhost/komet) in your web browser. If running on a remote server, replace localhost with
 the server’s IP address.
+
+## Application access credentials
+komet - a web application requires login credentials which is defined in users.ini file located at ./komet-data/users.ini
 
 Note: On the off chance that you have issues with running on the specific port on your computer, the
 docker-compose file is configurable to allow for other ports.  This can be run in the following way, substituting 8080
