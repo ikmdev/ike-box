@@ -2,8 +2,6 @@ services:
   nexus:
     image: sonatype/nexus3
     container_name: nexus
-    # ports:
-    #   - "${NEXUS_PORT:-8081}:8081"
     volumes:
       - nexus-data:/nexus-data
     healthcheck:
@@ -44,9 +42,6 @@ services:
   komet:
     image: ikebox/komet:0.0.1
     container_name: komet
-    # ports:
-    #   - "${KOMET_PORT:-8080}:8080"
-
     volumes:
       - ~/Solor:/root/Solor
       - ./komet-data/users.ini:/root/Solor/users.ini:ro
