@@ -55,8 +55,7 @@ Follow the steps below to build and run static website on your local machine:
 
 The application should now be running in the Docker container using Nginx as Reverse Proxy with the path based routing can be access as:
 
-[localhost/nexus](http://localhost/nexus) and [localhost/komet](http://localhost/komet) in your web browser. If running on a remote server, replace localhost with
-the server’s IP address.
+[localhost/nexus](http://localhost/nexus) and [localhost/komet](http://localhost/komet) in your web browser.
 
 ## Application access credentials
 komet - a web application requires login credentials which is defined in users.ini file located at ./komet-data/users.ini
