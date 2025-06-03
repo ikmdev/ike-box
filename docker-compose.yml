@@ -48,7 +48,8 @@ services:
       - "${KOMET_PORT:-8080}:8080"
 
     volumes:
-      - komet-data:/komet-data
+      - ~/Solor:/root/Solor
+      - ./komet-data/users.ini:/root/Solor/users.ini:ro
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/status/alive"]
       interval: 30s
