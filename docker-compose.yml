@@ -28,8 +28,8 @@ services:
       - GITEA__database__PATH=/data/gitea/gitea.db
       - GITEA__security__INSTALL_LOCK=true
       - GITEA__security__SECRET_KEY=your_secret_key
-      - GITEA__server__DOMAIN=localhost
-      - GITEA__server__ROOT_URL=http://localhost/git/
+      - GITEA__server__DOMAIN=gitea.ike.org
+      - GITEA__server__ROOT_URL=http://gitea.ike.org/
       - GITEA__admin__USER=admin
       - GITEA__admin__PASSWORD=admin
       - GITEA__admin__EMAIL=admin@example.com
@@ -71,7 +71,7 @@ services:
     depends_on:
       - nexus
       - komet
-    
+      - gitea
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:${NGINX_PORT:-80}/"]
       interval: 30s
@@ -85,12 +85,36 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    profiles:
+      - path-based
+  nginx-subdomain:
+    build:
+      context: .
+    container_name: nginx-subdomain
+    ports:
+      - "${NGINX_PORT:-80}:80"
+    volumes:
+      - ./subdomain/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx-logs:/var/log/nginx
+    depends_on:
+      - nexus
+      # - komet
+      # - gitea
+    networks:
+      - rapidenv
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    profiles:
+      - subdomain
 
 volumes:
   nexus-data:
   komet-data:
   nginx-logs:
-    driver: bridge
   gitea_data:
 
 networks:
