@@ -22,8 +22,13 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_route53domains_domain" "main" {
+resource "aws_route53domains_registered_domain" "main" {
   domain_name = var.domain_name
+  auto_renew         = false
+  registrant_privacy = true
+  admin_privacy      = true
+  tech_privacy       = true
+
   admin_contact {
     address_line_1 = var.contact_info.address_line_1
     city           = var.contact_info.city
@@ -63,10 +68,6 @@ resource "aws_route53domains_domain" "main" {
     zip_code       = var.contact_info.zip_code
   }
 
-  auto_renew         = false
-  registrant_privacy = true
-  admin_privacy      = true
-  tech_privacy       = true
 }
 # Reference the VPC
 # data "aws_vpc" "networkvpc" {
