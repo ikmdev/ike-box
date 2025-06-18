@@ -85,16 +85,16 @@ resource "aws_route53_zone" "public" {
   # }
    
 }
-locals {
-  subdomains = [var.subdomains]
-  target_ip = var.target_ip
-}
+# locals {
+#   subdomains = [var.subdomains]
+#   target_ip = var.target_ip
+# }
 
 resource "aws_route53_record" "subdomains" {
-  for_each = toset(local.subdomains)
+  for_each = toset(var.subdomains)
   zone_id  = aws_route53_zone.public.zone_id
   name     = "${each.key}.${var.domain_name}"
   type     = "A"
   ttl      = 300
-  records  = [local.target_ip]
+  records  = [var.target_ip]
 }
