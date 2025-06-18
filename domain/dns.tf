@@ -25,7 +25,7 @@ provider "aws" {
 }
 
 variable "domain_name" {
-  default = "sikeeytest.com"
+  default = "test-ike.org"
 }
 
 resource "aws_route53domains_registered_domain" "main" {
@@ -96,18 +96,18 @@ resource "aws_route53_zone" "private" {
 }
 locals {
   subdomains = [
-    "test1",
-    "test2",
-    "test3",
-    "test4",
-    "test5"
+    "www.ike.org",
+    "nexus.ike.org",
+    "komet.ike.org",
+    "gitea.ike.org",
+    "example.ike.org"
   ]
   target_ip = "172.20.3.26"
 }
 
 resource "aws_route53_record" "subdomains" {
   for_each = toset(local.subdomains)
-  zone_id  = aws_route53_zone.main.zone_id
+  zone_id  = aws_route53_zone.private.zone_id
   name     = "${each.key}.${var.domain_name}"
   type     = "A"
   ttl      = 300
