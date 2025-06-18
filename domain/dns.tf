@@ -1,6 +1,5 @@
 # DNS setup for testing purposes only.
 
-
 # Configure Terraform
 terraform {
   required_version = ">= 1.9.0"
@@ -12,7 +11,6 @@ terraform {
   }
   backend "s3" {
     region         = "us-east-1"
-    # dynamodb_table = "Fdashield-Infrastructure-TerraformLockStatus-DynamoDB"
     bucket         = "fdashield-infrastructure-terraformstatefile"
 
     # Do not change the name below
@@ -24,90 +22,77 @@ provider "aws" {
   region = "us-east-1"
 }
 
-variable "domain_name" {
-  default = "test-ike.org"
-}
-
 resource "aws_route53domains_registered_domain" "main" {
   domain_name = var.domain_name
-
-  admin_contact {
-    address_line_1   = "123 Main St"
-    city             = "Anytown"
-    contact_type     = "PERSON"
-    country_code     = "US"
-    email            = "sidahal@deloitte.com"
-    first_name       = "Sikeey"
-    last_name        = "Dahal"
-    phone_number     = "+17177436740"
-    state            = "PA"
-    zip_code         = "10001"
-  
-  
+    admin_contact {
+    address_line_1 = var.contact_info.address_line_1
+    city           = var.contact_info.city
+    contact_type   = var.contact_info.contact_type
+    country_code   = var.contact_info.country_code
+    email          = var.contact_info.email
+    first_name     = var.contact_info.first_name
+    last_name      = var.contact_info.last_name
+    phone_number   = var.contact_info.phone_number
+    state          = var.contact_info.state
+    zip_code       = var.contact_info.zip_code
   }
 
-  registrant_contact {
-    address_line_1   = "123 Main St"
-    city             = "Anytown"
-    contact_type     = "PERSON"
-    country_code     = "US"
-    email            = "sidahal@deloitte.com"
-    first_name       = "Sikeey"
-    last_name        = "Dahal"
-    phone_number     = "+17177436740"
-    state            = "PA"
-    zip_code         = "10001"
+   registrant_contact {
+    address_line_1 = var.contact_info.address_line_1
+    city           = var.contact_info.city
+    contact_type   = var.contact_info.contact_type
+    country_code   = var.contact_info.country_code
+    email          = var.contact_info.email
+    first_name     = var.contact_info.first_name
+    last_name      = var.contact_info.last_name
+    phone_number   = var.contact_info.phone_number
+    state          = var.contact_info.state
+    zip_code       = var.contact_info.zip_code
   }
 
   tech_contact {
-    address_line_1   = "123 Main St"
-    city             = "Anytown"
-    contact_type     = "PERSON"
-    country_code     = "US"
-    email            = "sidahal@deloitte.com"
-    first_name       = "Sikeey"
-    last_name        = "Dahal"
-    phone_number     = "+7177436740"
-    state            = "PA"
-    zip_code         = "10001"
+    address_line_1 = var.contact_info.address_line_1
+    city           = var.contact_info.city
+    contact_type   = var.contact_info.contact_type
+    country_code   = var.contact_info.country_code
+    email          = var.contact_info.email
+    first_name     = var.contact_info.first_name
+    last_name      = var.contact_info.last_name
+    phone_number   = var.contact_info.phone_number
+    state          = var.contact_info.state
+    zip_code       = var.contact_info.zip_code
   }
-
+  
   auto_renew        = false
   registrant_privacy = true
   admin_privacy      = true
   tech_privacy       = true
 }
 # Reference the VPC
-data "aws_vpc" "networkvpc" {
-  filter {
-    name   = "tag:Name"
-    values = ["FdaShield-Network-VPC"]
-  }
-}
+# data "aws_vpc" "networkvpc" {
+#   filter {
+#     name   = "tag:Name"
+#     values = ["FdaShield-Network-VPC"]
+#   }
+# }
  # create private hosted zone
 
-resource "aws_route53_zone" "private" {
+resource "aws_route53_zone" "public" {
   name = var.domain_name
-  vpc {
-    vpc_id = data.aws_vpc.networkvpc.id
+  # vpc {
+  #   vpc_id = data.aws_vpc.networkvpc.id
    
-  }
+  # }
    
 }
 locals {
-  subdomains = [
-    "www.ike.org",
-    "nexus.ike.org",
-    "komet.ike.org",
-    "gitea.ike.org",
-    "example.ike.org"
-  ]
-  target_ip = "172.20.3.26"
+  subdomains = [var.subdomains]
+  target_ip = var.target_ip
 }
 
 resource "aws_route53_record" "subdomains" {
   for_each = toset(local.subdomains)
-  zone_id  = aws_route53_zone.private.zone_id
+  zone_id  = aws_route53_zone.public.zone_id
   name     = "${each.key}.${var.domain_name}"
   type     = "A"
   ttl      = 300
