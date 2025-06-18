@@ -10,8 +10,8 @@ terraform {
     }
   }
   backend "s3" {
-    region         = "us-east-1"
-    bucket         = "fdashield-infrastructure-terraformstatefile"
+    region = "us-east-1"
+    bucket = "fdashield-infrastructure-terraformstatefile"
 
     # Do not change the name below
     key = "ike-inbox-dnshosting.tfstate"
@@ -24,7 +24,7 @@ provider "aws" {
 
 resource "aws_route53domains_registered_domain" "main" {
   domain_name = var.domain_name
-    admin_contact {
+  admin_contact {
     address_line_1 = var.contact_info.address_line_1
     city           = var.contact_info.city
     contact_type   = var.contact_info.contact_type
@@ -37,7 +37,7 @@ resource "aws_route53domains_registered_domain" "main" {
     zip_code       = var.contact_info.zip_code
   }
 
-   registrant_contact {
+  registrant_contact {
     address_line_1 = var.contact_info.address_line_1
     city           = var.contact_info.city
     contact_type   = var.contact_info.contact_type
@@ -62,8 +62,8 @@ resource "aws_route53domains_registered_domain" "main" {
     state          = var.contact_info.state
     zip_code       = var.contact_info.zip_code
   }
-  
-  auto_renew        = false
+
+  auto_renew         = false
   registrant_privacy = true
   admin_privacy      = true
   tech_privacy       = true
@@ -75,15 +75,15 @@ resource "aws_route53domains_registered_domain" "main" {
 #     values = ["FdaShield-Network-VPC"]
 #   }
 # }
- # create private hosted zone
+# create private hosted zone
 
 resource "aws_route53_zone" "public" {
   name = var.domain_name
   # vpc {
   #   vpc_id = data.aws_vpc.networkvpc.id
-   
+
   # }
-   
+
 }
 # locals {
 #   subdomains = [var.subdomains]

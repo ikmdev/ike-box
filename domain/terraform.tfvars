@@ -1,5 +1,5 @@
 domain_name = "ike.org"
-target_ip   = "172.20.3.26"
+target_ip   = "18.209.157.241"
 
 subdomains = [
   "www",
