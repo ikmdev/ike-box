@@ -77,12 +77,22 @@ resource "aws_route53domains_registered_domain" "main" {
   admin_privacy      = true
   tech_privacy       = true
 }
+# Reference the VPC
+data "aws_vpc" "networkvpc" {
+  filter {
+    name   = "tag:Name"
+    values = ["FdaShield-Network-VPC"]
+  }
+}
+ # create private hosted zone
 
 resource "aws_route53_zone" "private" {
   name = var.domain_name
   vpc {
-    vpc_id = aws_vpc.domain_name.id
+    vpc_id = data.aws_vpc.networkvpc.id
+   
   }
+   
 }
 locals {
   subdomains = [
@@ -92,7 +102,7 @@ locals {
     "test4",
     "test5"
   ]
-  target_ip = "1.2.3.4"
+  target_ip = "172.20.3.26"
 }
 
 resource "aws_route53_record" "subdomains" {
