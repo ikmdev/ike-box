@@ -78,7 +78,7 @@ resource "aws_route53domains_registered_domain" "main" {
 # create private hosted zone
 
 resource "aws_route53_zone" "public" {
-  name = var.domain_name
+  name = aws_route53domains_registered_domain.main.domain_name
   # vpc {
   #   vpc_id = data.aws_vpc.networkvpc.id
 
