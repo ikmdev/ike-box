@@ -22,7 +22,7 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_route53domains_registered_domain" "main" {
+resource "aws_route53domains_domain" "main" {
   domain_name = var.domain_name
   admin_contact {
     address_line_1 = var.contact_info.address_line_1
@@ -79,6 +79,7 @@ resource "aws_route53domains_registered_domain" "main" {
 
 resource "aws_route53_zone" "public" {
   name = aws_route53domains_registered_domain.main.domain_name
+  depends_on = [aws_route53domains_registered_domain.main ]
   # vpc {
   #   vpc_id = data.aws_vpc.networkvpc.id
 
