@@ -1,5 +1,5 @@
 domain_name = "ikedesigns.com"
-aws_region = "us-east-1"
+aws_region  = "us-east-1"
 target_ip   = "18.209.157.241"
 
 subdomains = [

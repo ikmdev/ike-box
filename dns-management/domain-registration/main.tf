@@ -23,7 +23,7 @@ provider "aws" {
 }
 
 resource "aws_route53domains_domain" "main" {
-  domain_name = var.domain_name
+  domain_name        = var.domain_name
   auto_renew         = false
   registrant_privacy = true
   admin_privacy      = true
@@ -69,23 +69,12 @@ resource "aws_route53domains_domain" "main" {
   }
 
 }
-# Reference the VPC
-# data "aws_vpc" "networkvpc" {
-#   filter {
-#     name   = "tag:Name"
-#     values = ["FdaShield-Network-VPC"]
-#   }
-# }
+
 # create public hosted zone
 
 resource "aws_route53_zone" "public" {
-  name = aws_route53domains_registered_domain.main.domain_name
-  depends_on = [aws_route53domains_registered_domain.main ]
-#   # vpc {
-#   #   vpc_id = data.aws_vpc.networkvpc.id
-
-#   # }
-
+  name       = aws_route53domains_domain.main.domain_name
+  depends_on = [aws_route53domains_domain.main]
 }
 
 
