@@ -10,7 +10,7 @@ domain_name = "ikedesigns.com"
 # ]
 
 contact_info = {
-  address_line_1 = "123 Main St"
+  address_line_1 = "6333 Chatham Glenn way"
   city           = "Harrisburg"
   contact_type   = "PERSON"
   country_code   = "US"
