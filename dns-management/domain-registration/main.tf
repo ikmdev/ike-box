@@ -22,7 +22,7 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_route53domains_registered_domain" "main" {
+resource "aws_route53domains_domain" "main" {
   domain_name = var.domain_name
   auto_renew         = false
   registrant_privacy = true
