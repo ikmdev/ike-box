@@ -10,7 +10,7 @@ terraform {
     }
   }
   backend "s3" {
-    region = "us-east-1"
+    region = var.aws_region
     bucket = "fdashield-infrastructure-terraformstatefile"
 
     # Do not change the name below
@@ -19,7 +19,7 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-1"
+  region = var.aws_region
 }
 
 resource "aws_route53domains_domain" "main" {
@@ -76,27 +76,24 @@ resource "aws_route53domains_domain" "main" {
 #     values = ["FdaShield-Network-VPC"]
 #   }
 # }
-# create private hosted zone
+# create public hosted zone
 
-# resource "aws_route53_zone" "public" {
-#   name = aws_route53domains_registered_domain.main.domain_name
-#   depends_on = [aws_route53domains_registered_domain.main ]
+resource "aws_route53_zone" "public" {
+  name = aws_route53domains_registered_domain.main.domain_name
+  depends_on = [aws_route53domains_registered_domain.main ]
 #   # vpc {
 #   #   vpc_id = data.aws_vpc.networkvpc.id
 
 #   # }
 
-# }
-# # locals {
-# #   subdomains = [var.subdomains]
-# #   target_ip = var.target_ip
-# # }
+}
 
-# resource "aws_route53_record" "subdomains" {
-#   for_each = toset(var.subdomains)
-#   zone_id  = aws_route53_zone.public.zone_id
-#   name     = "${each.key}.${var.domain_name}"
-#   type     = "A"
-#   ttl      = 300
-#   records  = [var.target_ip]
-# }
+
+resource "aws_route53_record" "subdomains" {
+  for_each = toset(var.subdomains)
+  zone_id  = aws_route53_zone.public.zone_id
+  name     = "${each.key}.${var.domain_name}"
+  type     = "A"
+  ttl      = 300
+  records  = [var.target_ip]
+}

@@ -1,13 +1,14 @@
 domain_name = "ikedesigns.com"
-# target_ip   = "18.209.157.241"
+aws_region = "us-east-1"
+target_ip   = "18.209.157.241"
 
-# subdomains = [
-#   "www",
-#   "nexus",
-#   "komet",
-#   "gitea",
-#   "example"
-# ]
+subdomains = [
+  "www",
+  "nexus",
+  "komet",
+  "gitea",
+  "example"
+]
 
 contact_info = {
   address_line_1 = "6333 Chatham Glenn way"

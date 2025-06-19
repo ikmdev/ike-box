@@ -1,17 +1,23 @@
+variable "aws_region" {
+  description = "AWS region"
+  type        = string
+  default     = "us-east-1"
+}
+
 variable "domain_name" {
   description = "The domain name to register"
   type        = string
 }
 
-# variable "target_ip" {
-#   description = "The target IP address for subdomains"
-#   type        = string
-# }
+variable "target_ip" {
+  description = "The target IP address for subdomains"
+  type        = string
+}
 
-# variable "subdomains" {
-#   description = "List of subdomains to create"
-#   type        = list(string)
-# }
+variable "subdomains" {
+  description = "List of subdomains to create"
+  type        = list(string)
+}
 
 variable "contact_info" {
   description = "Contact information for domain registration"
