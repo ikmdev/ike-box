@@ -11,7 +11,7 @@ subdomains = [
 
 contact_info = {
   address_line_1 = "123 Main St"
-  city           = "Anytown"
+  city           = "Harrisburg"
   contact_type   = "PERSON"
   country_code   = "US"
   email          = "sidahal@deloitte.com"
