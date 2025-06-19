@@ -3,15 +3,15 @@ variable "domain_name" {
   type        = string
 }
 
-variable "target_ip" {
-  description = "The target IP address for subdomains"
-  type        = string
-}
+# variable "target_ip" {
+#   description = "The target IP address for subdomains"
+#   type        = string
+# }
 
-variable "subdomains" {
-  description = "List of subdomains to create"
-  type        = list(string)
-}
+# variable "subdomains" {
+#   description = "List of subdomains to create"
+#   type        = list(string)
+# }
 
 variable "contact_info" {
   description = "Contact information for domain registration"
