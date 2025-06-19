@@ -78,25 +78,25 @@ resource "aws_route53domains_registered_domain" "main" {
 # }
 # create private hosted zone
 
-resource "aws_route53_zone" "public" {
-  name = aws_route53domains_registered_domain.main.domain_name
-  depends_on = [aws_route53domains_registered_domain.main ]
-  # vpc {
-  #   vpc_id = data.aws_vpc.networkvpc.id
+# resource "aws_route53_zone" "public" {
+#   name = aws_route53domains_registered_domain.main.domain_name
+#   depends_on = [aws_route53domains_registered_domain.main ]
+#   # vpc {
+#   #   vpc_id = data.aws_vpc.networkvpc.id
 
-  # }
+#   # }
 
-}
-# locals {
-#   subdomains = [var.subdomains]
-#   target_ip = var.target_ip
 # }
+# # locals {
+# #   subdomains = [var.subdomains]
+# #   target_ip = var.target_ip
+# # }
 
-resource "aws_route53_record" "subdomains" {
-  for_each = toset(var.subdomains)
-  zone_id  = aws_route53_zone.public.zone_id
-  name     = "${each.key}.${var.domain_name}"
-  type     = "A"
-  ttl      = 300
-  records  = [var.target_ip]
-}
+# resource "aws_route53_record" "subdomains" {
+#   for_each = toset(var.subdomains)
+#   zone_id  = aws_route53_zone.public.zone_id
+#   name     = "${each.key}.${var.domain_name}"
+#   type     = "A"
+#   ttl      = 300
+#   records  = [var.target_ip]
+# }
