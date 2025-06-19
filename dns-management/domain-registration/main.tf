@@ -10,7 +10,6 @@ terraform {
     }
   }
   backend "s3" {
-    region = var.aws_region
     bucket = "fdashield-infrastructure-terraformstatefile"
 
     # Do not change the name below
