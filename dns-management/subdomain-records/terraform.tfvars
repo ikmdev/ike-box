@@ -6,5 +6,5 @@ subdomains = [
   "nexus",
   "komet",
   "gitea",
-  "example"
+  "jenkins"
 ]
