@@ -69,7 +69,6 @@ services:
      build:
       context: .
       dockerfile: Dockerfile-subdomain-web
-
      container_name: static-site
      volumes:
       - ikmdev-data:/data
