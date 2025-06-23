@@ -95,7 +95,7 @@ services:
       - komet
       - ikmdev-site
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://komet.ikedesigns.com/status/alive"] 
+      test: ["CMD", "curl", "-f", "http://localhost:${NGINX_PORT:-80}/"] 
       interval: 30s
       timeout: 10s
       retries: 3
