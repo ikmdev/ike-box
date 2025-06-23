@@ -66,14 +66,15 @@ services:
     profiles:
       - path-based
   ikmdev-site:
-    image: ikebox/ikmdev-site:main
-    container_name: static-site
-    volumes:
+     build:
+      context: ./Dockerfile-ikmdev-site
+     container_name: static-site
+     volumes:
       - ikmdev-data:/data
-    networks:
+     networks:
       - rapidenv
-    restart: unless-stopped
-    logging:
+     restart: unless-stopped
+     logging:
       driver: "json-file"
       options:
         max-size: "10m"
