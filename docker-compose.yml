@@ -67,7 +67,9 @@ services:
       - path-based
   ikmdev-site:
      build:
-      context: ./Dockerfile-ikmdev-site
+      context: .
+      dockerfile: Dockerfile-subdomain-web
+
      container_name: static-site
      volumes:
       - ikmdev-data:/data
