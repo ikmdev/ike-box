@@ -94,6 +94,11 @@ services:
       - nexus
       - komet
       - ikmdev-site
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://komet.ikedesigns.com/status/alive"] 
+      interval: 30s
+      timeout: 10s
+      retries: 3
     networks:
       - rapidenv
     restart: always
