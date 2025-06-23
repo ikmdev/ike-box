@@ -18,20 +18,6 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  ikmdev-site:
-    image: ikebox/ikmdev-site:main
-    container_name: static-site
-    volumes:
-      - ikmdev-data:/data
-    networks:
-      - rapidenv
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-
   komet:
     image: ikebox/komet:0.0.1
     container_name: komet
@@ -79,6 +65,19 @@ services:
         max-file: "3"
     profiles:
       - path-based
+  ikmdev-site:
+    image: ikebox/ikmdev-site:main
+    container_name: static-site
+    volumes:
+      - ikmdev-data:/data
+    networks:
+      - rapidenv
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
   nginx-subdomain:
     build:
       context: .
