@@ -18,26 +18,19 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  gitea:
-    image: gitea/gitea:latest
-    container_name: gitea
-    environment:
-      - USER_UID=1000
-      - USER_GID=1000
-      - GITEA__database__DB_TYPE=sqlite3
-      - GITEA__database__PATH=/data/gitea/gitea.db
-      - GITEA__security__INSTALL_LOCK=true
-      - GITEA__security__SECRET_KEY=your_secret_key
-      - GITEA__server__DOMAIN=gitea.ike.org
-      - GITEA__server__ROOT_URL=http://gitea.ike.org/
-      - GITEA__admin__USER=admin
-      - GITEA__admin__PASSWORD=admin
-      - GITEA__admin__EMAIL=admin@example.com
+  ikmdev-site:
+    image: ikebox/ikmdev-site:main
+    container_name: static-site
     volumes:
-      - gitea_data:/data
+      - ikmdev-data:/data
     networks:
       - rapidenv
-    restart: always
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   komet:
     image: ikebox/komet:0.0.1
@@ -71,7 +64,6 @@ services:
     depends_on:
       - nexus
       - komet
-      - gitea
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:${NGINX_PORT:-80}/"]
       interval: 30s
@@ -100,7 +92,7 @@ services:
     depends_on:
       - nexus
       - komet
-      - gitea
+      - ikmdev-site
     networks:
       - rapidenv
     restart: always
@@ -116,7 +108,7 @@ volumes:
   nexus-data:
   komet-data:
   nginx-logs:
-  gitea_data:
+  ikmdev-data:
 
 networks:
   rapidenv:
