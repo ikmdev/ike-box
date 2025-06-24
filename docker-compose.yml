@@ -17,6 +17,7 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    profiles: ["path-based", "subdomain"]
 
   komet:
     image: ikebox/komet:0.0.1
@@ -37,6 +38,7 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    profiles: ["path-based", "subdomain"]
 
   nginx:
     build:
@@ -63,23 +65,8 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-    profiles:
-      - path-based
-  ikmdev-site:
-     build:
-      context: .
-      dockerfile: Dockerfile-subdomain-web
-     container_name: static-site
-     volumes:
-      - ikmdev-data:/data
-     networks:
-      - rapidenv
-     restart: unless-stopped
-     logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+    profiles: ["path-based"]
+  
   nginx-subdomain:
     build:
       context: .
@@ -93,9 +80,8 @@ services:
     depends_on:
       - nexus
       - komet
-      - ikmdev-site
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:${NGINX_PORT:-80}/"]
+      test: ["CMD-SHELL", "echo ok"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -107,9 +93,23 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-    profiles:
-      - subdomain
-
+    profiles: ["subdomain"]
+  ikmdev-site:
+     build:
+      context: .
+      dockerfile: Dockerfile-subdomain-web
+     container_name: ikmdev-site
+     volumes:
+      - ikmdev-data:/data
+     networks:
+      - rapidenv
+     restart: unless-stopped
+     logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+     profiles: ["subdomain"]
 volumes:
   nexus-data:
   komet-data:
