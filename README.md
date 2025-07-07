@@ -64,7 +64,109 @@ NGINX_PORT=8080 docker compose up -d
 
 ## Running on a Server
 
-To be updated soon!
+This is the complete steps that worked on Amazon linux by deploying a subdomain-based routing solution using Nginx, Docker Compose, and Terraform on AWS to procure and set up a domain name and all of it’s necessary records for hosting IKE in a Box
+
+1. Prerequisites
+Terraform is used for domain registration and DNS management (in the dns-management directory).
+Docker Compose is used for deploying application services on an EC2 instance.
+Docker and Docker Compose (see below)
+
+
+2. Domain Registration and DNS Setup with Terraform
+
+
+Navigate to the DNS Management Directory:
+ dns-management
+
+Initialize Terraform:
+terraform init
+
+Review and Apply the Terraform Plan:
+
+This will register your domain (e.g., ikedesigns.com) and create subdomain records (e.g., nexus.ikedesigns.com, komet.ikedesigns.com, www.ikedesigns.com) pointing to your EC2 instance.
+
+Code ExampleBashterraform plan
+terraform apply
+
+Confirm the action when prompted.
+
+Verify DNS Records:
+
+After Terraform completes, verify your records in the AWS Route 53 console.
+It may take a few minutes for DNS propagation.
+
+# Connect to the Instance:
+Code ExampleBashssh -i /path/to/your-key.pem ec2-user@<EC2_PUBLIC_IP>
+
+# Update system
+
+```bash
+sudo dnf update -y
+```
+ 
+# Install Docker
+
+sudo dnf install docker -y
+ 
+# Start Docker
+sudo systemctl start docker
+ 
+# Enable Docker to start on boot
+
+sudo systemctl enable docker
+ 
+# Add your user to the docker group (log out/in after this)
+
+sudo usermod -aG docker $USER
+ 
+ 
+# Install Docker Compose (latest version)
+
+DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)
+sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+ 
+# Make Docker Compose executable
+
+Plain Text
+sudo chmod +x /usr/local/bin/docker-compose
+ 
+# Verify installations
+
+Plain Text
+docker --version
+docker-compose --version
+
+
+Deploy Application Services
+
+Install git Clone the repository
+[text](https://github.com/ikmdev/ike-box.git)
+
+
+# Verify installations
+Run Docker Compose with Subdomain Profile
+
+
+# Build and Start Services:
+Code ExampleBashcd your-project
+docker-compose --profile subdomain up -d --build
+docker-compose --profile subdomain up -d
+
+Check Running Containers:
+Code ExampleBashdocker ps
+
+Check Nginx Logs (if troubleshooting):
+Code ExampleBashdocker logs nginx-subdomain
+
+
+# Test Your Sub-domain
+
+Open your browser and visit:
+
+http://www.ikedesigns.com
+http://nexus.ikedesigns.com
+http://komet.ikedesigns.com
 
 ## Issues and Contributions
 
