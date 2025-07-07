@@ -1,13 +1,13 @@
 domain_name = "ikedesigns.com"
-aws_region  = "us-east-1"
-target_ip   = "18.209.157.241"
+aws_region  = "us-east-2"
+target_ip   = "18.119.11.183"
 
 subdomains = [
   "www",
   "nexus",
   "komet",
   "gitea",
-  "example"
+  "jenkins"
 ]
 
 contact_info = {
