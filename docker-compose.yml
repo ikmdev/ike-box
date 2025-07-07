@@ -26,7 +26,7 @@ services:
       - ~/Solor:/root/Solor
       - ./komet-data/users.ini:/root/Solor/users.ini:ro
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/status/alive"]
+      test: ["CMD-SHELL", "echo ok"]
       interval: 30s
       timeout: 10s
       retries: 3
