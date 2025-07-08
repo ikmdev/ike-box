@@ -40,12 +40,24 @@ Follow the steps below to build and run static website on your local machine:
 
 3. Enter the following command to execute startup all of the applications:
 
+<<<<<<< HEAD
     ```bash
     docker-compose up -d 
     ```
+=======
+<<<<<<< Updated upstream
+  ```bash
+  docker-compose up -d 
+  ```
+>>>>>>> 6da5ee7 (merging with upstream)
 
-4. To view the applications directly open your web browser and navigate to: http://localhost
+4. To view the applications directly open your web browser and navigate to: 
+* Komet: http://localhost:8080
+* Nexus: http://localhost:8081
 
+* ```bash
+    docker-compose up -d 
+    ```
 
 5. To shut down the applications, run the following command:
 
@@ -55,10 +67,8 @@ Follow the steps below to build and run static website on your local machine:
 
 The application should now be running in the Docker container using Nginx as Reverse Proxy with the path based routing can be access as:
 
-[localhost/nexus](http://localhost/nexus) and [localhost/komet](http://localhost/komet) in your web browser.
-
-## Application access credentials
-komet - a web application requires login credentials which is defined in users.ini file located at ./komet-data/users.ini
+[localhost/nexus](http://localhost/nexus) and [localhost/komet](http://localhost/komet) in your web browser. If running on a remote server, replace localhost with
+the server’s IP address.
 
 Note: On the off chance that you have issues with running on the specific port on your computer, the
 docker-compose file is configurable to allow for other ports.  This can be run in the following way, substituting 8080
@@ -220,4 +230,3 @@ NGINX_PORT=8080 CERTBOT_EMAIL=your.email@example.com docker compose up -d
 Technical and non-technical issues can be reported to the [Issue Tracker](https://github.com/ikmdev/repo-seed/issues).
 
 Contributions can be submitted via pull requests. Please check the [contribution guide](doc/how-to-contribute.md) for more details.
-
