@@ -40,11 +40,19 @@ logger = logging.getLogger('create_domains')
 
 class EasyDNSClient:
     """Client for interacting with the easyDNS API."""
+<<<<<<< HEAD
 
     def __init__(self, api_key: str, api_secret: str, endpoint: str = "https://rest.easydns.net"):
         """
         Initialize the easyDNS API client.
 
+=======
+    
+    def __init__(self, api_key: str, api_secret: str, endpoint: str = "https://rest.easydns.net"):
+        """
+        Initialize the easyDNS API client.
+        
+>>>>>>> 6da5ee7 (merging with upstream)
         Args:
             api_key: The easyDNS API key
             api_secret: The easyDNS API secret
@@ -59,6 +67,7 @@ class EasyDNSClient:
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         })
+<<<<<<< HEAD
 
     def create_domain(self, domain: str) -> Dict[str, Any]:
         """
@@ -67,17 +76,32 @@ class EasyDNSClient:
         Args:
             domain: The domain name to create
 
+=======
+    
+    def create_domain(self, domain: str) -> Dict[str, Any]:
+        """
+        Create a new domain in easyDNS.
+        
+        Args:
+            domain: The domain name to create
+            
+>>>>>>> 6da5ee7 (merging with upstream)
         Returns:
             The API response as a dictionary
         """
         url = f"{self.endpoint}/domains/add/{domain}"
         logger.info(f"Creating domain: {domain}")
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 6da5ee7 (merging with upstream)
         try:
             response = self.session.put(url, json={})
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
+<<<<<<< HEAD
             # Check if the domain already exists
             if hasattr(e, 'response') and e.response is not None:
                 response_text = e.response.text
@@ -88,24 +112,43 @@ class EasyDNSClient:
             logger.error(f"Failed to create domain {domain}: {str(e)}")
             return {"error": str(e)}
 
+=======
+            logger.error(f"Failed to create domain {domain}: {str(e)}")
+            if hasattr(e, 'response') and e.response is not None:
+                logger.error(f"Response: {e.response.text}")
+            return {"error": str(e)}
+    
+>>>>>>> 6da5ee7 (merging with upstream)
     def create_subdomain(self, domain: str, subdomain: str, record_type: str = "A", 
                          ttl: int = 3600, content: str = "127.0.0.1") -> Dict[str, Any]:
         """
         Create a new subdomain (DNS record) in easyDNS.
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 6da5ee7 (merging with upstream)
         Args:
             domain: The parent domain name
             subdomain: The subdomain name (without the parent domain)
             record_type: The DNS record type (default: A)
             ttl: Time to live in seconds (default: 3600)
             content: The record content/value (default: 127.0.0.1)
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> 6da5ee7 (merging with upstream)
         Returns:
             The API response as a dictionary
         """
         url = f"{self.endpoint}/domains/{domain}/records"
         full_name = f"{subdomain}.{domain}" if subdomain else domain
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 6da5ee7 (merging with upstream)
         data = {
             "domain": domain,
             "name": subdomain,
@@ -114,14 +157,21 @@ class EasyDNSClient:
             "prio": 0,
             "content": content
         }
+<<<<<<< HEAD
 
         logger.info(f"Creating subdomain: {full_name}")
 
+=======
+        
+        logger.info(f"Creating subdomain: {full_name}")
+        
+>>>>>>> 6da5ee7 (merging with upstream)
         try:
             response = self.session.post(url, json=data)
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
+<<<<<<< HEAD
             # Check if the subdomain already exists
             if hasattr(e, 'response') and e.response is not None:
                 response_text = e.response.text
@@ -130,15 +180,27 @@ class EasyDNSClient:
                     return {"info": "already_exists", "subdomain": full_name}
                 logger.error(f"Response: {response_text}")
             logger.error(f"Failed to create subdomain {full_name}: {str(e)}")
+=======
+            logger.error(f"Failed to create subdomain {full_name}: {str(e)}")
+            if hasattr(e, 'response') and e.response is not None:
+                logger.error(f"Response: {e.response.text}")
+>>>>>>> 6da5ee7 (merging with upstream)
             return {"error": str(e)}
 
 def load_config(config_file: str) -> Dict[str, Any]:
     """
     Load configuration from a JSON file.
+<<<<<<< HEAD
 
     Args:
         config_file: Path to the configuration file
 
+=======
+    
+    Args:
+        config_file: Path to the configuration file
+        
+>>>>>>> 6da5ee7 (merging with upstream)
     Returns:
         Configuration as a dictionary
     """
@@ -152,7 +214,11 @@ def load_config(config_file: str) -> Dict[str, Any]:
 def parse_domains_file(domains_file: str) -> List[Dict[str, Any]]:
     """
     Parse the domains file to extract domain and subdomain information.
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 6da5ee7 (merging with upstream)
     The file format should be:
     domain.com
         subdomain1
@@ -160,23 +226,38 @@ def parse_domains_file(domains_file: str) -> List[Dict[str, Any]]:
     domain2.com
         subdomain3
         subdomain4
+<<<<<<< HEAD
 
     Args:
         domains_file: Path to the domains file
 
+=======
+    
+    Args:
+        domains_file: Path to the domains file
+        
+>>>>>>> 6da5ee7 (merging with upstream)
     Returns:
         List of dictionaries with domain and subdomain information
     """
     domains = []
     current_domain = None
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 6da5ee7 (merging with upstream)
     try:
         with open(domains_file, 'r') as f:
             for line in f:
                 line = line.strip()
                 if not line or line.startswith('#'):
                     continue
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> 6da5ee7 (merging with upstream)
                 if not line.startswith(' ') and not line.startswith('\t'):
                     # This is a domain
                     current_domain = {
@@ -191,7 +272,11 @@ def parse_domains_file(domains_file: str) -> List[Dict[str, Any]]:
     except FileNotFoundError:
         logger.error(f"Domains file not found: {domains_file}")
         sys.exit(1)
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 6da5ee7 (merging with upstream)
     return domains
 
 def main():
@@ -200,18 +285,28 @@ def main():
     parser.add_argument("--config", default="config.json", help="Path to the configuration file")
     parser.add_argument("--domains", default="domains.txt", help="Path to the domains file")
     parser.add_argument("subdomains", nargs="*", help="Optional list of specific subdomains to create")
+<<<<<<< HEAD
 
     args = parser.parse_args()
 
     # Load configuration
     config = load_config(args.config)
 
+=======
+    
+    args = parser.parse_args()
+    
+    # Load configuration
+    config = load_config(args.config)
+    
+>>>>>>> 6da5ee7 (merging with upstream)
     # Create easyDNS client
     client = EasyDNSClient(
         api_key=config.get("api_key"),
         api_secret=config.get("api_secret"),
         endpoint=config.get("endpoint", "https://rest.easydns.net")
     )
+<<<<<<< HEAD
 
     # Parse domains file
     domains = parse_domains_file(args.domains)
@@ -225,11 +320,27 @@ def main():
         if "error" in result and "info" not in result:
             logger.warning(f"Could not create domain {domain_name}, there was an error")
 
+=======
+    
+    # Parse domains file
+    domains = parse_domains_file(args.domains)
+    
+    # Create domains and subdomains
+    for domain_info in domains:
+        domain_name = domain_info["name"]
+        
+        # Create the domain
+        result = client.create_domain(domain_name)
+        if "error" in result:
+            logger.warning(f"Could not create domain {domain_name}, it may already exist or there was an error")
+        
+>>>>>>> 6da5ee7 (merging with upstream)
         # Create subdomains
         for subdomain in domain_info["subdomains"]:
             # If specific subdomains were provided, only create those
             if args.subdomains and subdomain not in args.subdomains:
                 continue
+<<<<<<< HEAD
 
             result = client.create_subdomain(domain_name, subdomain)
             if "error" in result and "info" not in result:
@@ -237,3 +348,12 @@ def main():
 
 if __name__ == "__main__":
     main()
+=======
+            
+            result = client.create_subdomain(domain_name, subdomain)
+            if "error" in result:
+                logger.warning(f"Could not create subdomain {subdomain}.{domain_name}, it may already exist or there was an error")
+
+if __name__ == "__main__":
+    main()
+>>>>>>> 6da5ee7 (merging with upstream)
