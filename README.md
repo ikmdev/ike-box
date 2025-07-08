@@ -64,7 +64,7 @@ NGINX_PORT=8080 docker compose up -d
 
 ## Running on a Server
 
-This is the complete steps that worked on Amazon linux by deploying a subdomain-based routing solution using Nginx, Docker Compose, and Terraform on AWS to procure and set up a domain name and all of it’s necessary records for hosting IKE in a Box
+This is the complete steps that worked on Amazon linux by deploying a subdomain-based routing solution using Nginx, Docker Compose, and Terraform code on AWS to procure and set up a domain name and all of it’s necessary records for hosting IKE in a Box
 
 1. Prerequisites
 Terraform is used for domain registration and DNS management (in the dns-management directory).
@@ -74,20 +74,21 @@ Docker and Docker Compose (see below)
 
 2. Domain Registration and DNS Setup with Terraform
 
-
 Navigate to the DNS Management Directory:
  dns-management
 
 Initialize Terraform:
-terraform init
 
+```bash
+terraform init
+```
 Review and Apply the Terraform Plan:
 
 This will register your domain (e.g., ikedesigns.com) and create subdomain records (e.g., nexus.ikedesigns.com, komet.ikedesigns.com, www.ikedesigns.com) pointing to your EC2 instance.
 
-Code ExampleBashterraform plan
+```bash
 terraform apply
-
+```
 Confirm the action when prompted.
 
 Verify DNS Records:
@@ -95,77 +96,100 @@ Verify DNS Records:
 After Terraform completes, verify your records in the AWS Route 53 console.
 It may take a few minutes for DNS propagation.
 
-# Connect to the Instance:
-Code ExampleBashssh -i /path/to/your-key.pem ec2-user@<EC2_PUBLIC_IP>
-
-# Update system
+### Connect to the Instance:
+```bash
+ssh -i /path/to/your-key.pem ec2-user@<EC2_PUBLIC_IP>
+example: ssh -i ~/.ssh/docker-deployment-key.pem ec2-user@18.119.11.183
+```
+### Update system
 
 ```bash
 sudo dnf update -y
 ```
  
-# Install Docker
-
+### Install Docker
+```bash
 sudo dnf install docker -y
- 
-# Start Docker
+```
+### Start Docker
+```bash
 sudo systemctl start docker
- 
-# Enable Docker to start on boot
-
+  
+```
+### Enable Docker to start on boot
+```bash
 sudo systemctl enable docker
- 
-# Add your user to the docker group (log out/in after this)
-
+```
+### Add your user to the docker group (log out/in after this)
+```bash
 sudo usermod -aG docker $USER
+```
  
- 
-# Install Docker Compose (latest version)
-
+### Install Docker Compose (latest version)
+```bash
 DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)
 sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-
  
-# Make Docker Compose executable
-
-Plain Text
+```
+ 
+### Make Docker Compose executable
+```bash
 sudo chmod +x /usr/local/bin/docker-compose
- 
-# Verify installations
-
-Plain Text
+  
+```
+### Verify installations
+```bash
 docker --version
 docker-compose --version
+```
+
+## Deploy Application Services
+
+Install git and Clone ike-in-box repository
+```bash
+git clone https://github.com/ikmdev/ike-box.git
+
+```
+## Run Docker Compose with Subdomain Profile
+Use Docker Compose profiles to switch between subdomain and path-based routing.
 
 
-Deploy Application Services
-
-Install git Clone the repository
-[text](https://github.com/ikmdev/ike-box.git)
-
-
-# Verify installations
-Run Docker Compose with Subdomain Profile
+Note: 
+* Only one Nginx service should be active at a time to avoid port conflicts.
+* Only the nginx-subdomain service is activated when you use the --profile subdomain flag
+* You may want to remove the container_name: nginx line or make the names unique if you ever run both at once.
+* No conflicting port mappings. (Only one Nginx service should run at a time on the same port.)
 
 
-# Build and Start Services:
-Code ExampleBashcd your-project
-docker-compose --profile subdomain up -d --build
+### Build and Start Services:
+```bash
+docker-compose --profile subdomain --build
 docker-compose --profile subdomain up -d
+```
+To shut down the applications for Subdomain Profile, run the following command:
 
+  ```bash
+  docker-compose --profile subdomain down
+  ```
 Check Running Containers:
-Code ExampleBashdocker ps
-
+```bash
+docker ps
+ 
+```
 Check Nginx Logs (if troubleshooting):
-Code ExampleBashdocker logs nginx-subdomain
+```bash
+docker logs nginx-subdomain
+ 
+```
 
-
-# Test Your Sub-domain
+### Access application with your Sub-domains
 
 Open your browser and visit:
 
 http://www.ikedesigns.com
+
 http://nexus.ikedesigns.com
+
 http://komet.ikedesigns.com
 
 ## Issues and Contributions
