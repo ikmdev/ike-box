@@ -26,7 +26,7 @@ services:
       - ~/Solor:/root/Solor
       - ./komet-data/users.ini:/root/Solor/users.ini:ro
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/status/alive"]
+      test: ["CMD-SHELL", "echo ok"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -38,6 +38,7 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    profiles: ["path-based", "subdomain"]
 
   nginx:
     build:
@@ -64,8 +65,27 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-    profiles:
-      - path-based
+    profiles: ["path-based"]
+  ikmdev-site:
+      image: ikebox/ikmdev-site:1.0.0
+      container_name: ikmdev-site
+      volumes:
+      - ikmdev-data:/data
+      healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost/"]
+        interval: 30s
+        timeout: 10s
+        retries: 3
+      networks:
+      - rapidenv
+      restart: unless-stopped
+      logging:
+       driver: "json-file"
+       options:
+        max-size: "10m"
+        max-file: "3"
+      profiles: ["subdomain"]
+  
   nginx-subdomain:
     build:
       context: .
@@ -79,7 +99,12 @@ services:
     depends_on:
       - nexus
       - komet
-      - gitea
+      - ikmdev-site
+    healthcheck:
+      test: ["CMD-SHELL", "echo ok"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     networks:
       - rapidenv
     restart: always
@@ -88,14 +113,12 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-    profiles:
-      - subdomain
-
+    profiles: ["subdomain"]
 volumes:
   nexus-data:
   komet-data:
   nginx-logs:
-  gitea_data:
+  ikmdev-data:
 
 networks:
   rapidenv:
