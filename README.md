@@ -1,6 +1,6 @@
 # IKE in a Box
 
-This is all of the infrastructure needed for running the entire Integrated 
+This is all the infrastructure needed for running the entire Integrated 
 Knowledge Environment. 
 
 This will include the following:
@@ -24,6 +24,12 @@ intended to contain hardened images.
 * Install [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/)
   (or something compatible, such as on your local machine.
 
+## DNS Management
+
+If you haven't created the DNS entries for the domains and subdomains that you want to use, you can do so by following 
+the instructions in the [DNS Management](dns-management/DNS-MGMT.md) document. This will allow you to create the 
+necessary DNS entries for the domains and subdomains that you want to use with this repository.
+
 ## Running Locally
 
 Follow the steps below to build and run static website on your local machine:
@@ -34,18 +40,28 @@ Follow the steps below to build and run static website on your local machine:
 
 3. Enter the following command to execute startup all of the applications:
 
+<<<<<<< HEAD
+    ```bash
+    docker-compose up -d 
+    ```
+=======
+<<<<<<< Updated upstream
   ```bash
   docker-compose up -d 
   ```
+>>>>>>> 6da5ee7 (merging with upstream)
 
 4. To view the applications directly open your web browser and navigate to: http://localhost
 
+* ```bash
+    docker-compose up -d 
+    ```
 
 5. To shut down the applications, run the following command:
 
-  ```bash
-  docker-compose down
-  ```
+    ```bash
+    docker-compose down
+    ```
 
 The application should now be running in the Docker container using Nginx as Reverse Proxy with the path based routing can be access as:
 
@@ -199,4 +215,3 @@ http://komet.ikedesigns.com
 Technical and non-technical issues can be reported to the [Issue Tracker](https://github.com/ikmdev/repo-seed/issues).
 
 Contributions can be submitted via pull requests. Please check the [contribution guide](doc/how-to-contribute.md) for more details.
-
