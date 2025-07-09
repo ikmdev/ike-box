@@ -66,25 +66,27 @@ NGINX_PORT=8080 docker compose up -d
 
 This is the complete steps that worked on Amazon linux by deploying a subdomain-based routing solution using Nginx, Docker Compose, and Terraform code on AWS to procure and set up a domain name and all of it’s necessary records for hosting IKE in a Box
 
-1. Prerequisites
-Terraform is used for domain registration and DNS management (in the dns-management directory).
-Docker Compose is used for deploying application services on an EC2 instance.
-Docker and Docker Compose (see below)
+## Prerequisites - running on server
+ 1. DNS setup: Script for DNS setup in AWS or EasyDNS
+Here is the branch link for EasyDNS https://github.com/jlgrock/ike-box/tree/domain-script
+2. DNS setup with AWS: Domain Registration and DNS Setup with Terraform
+3. Install Docker and Docker Compose ( detail steps provided below)
+4. AWS EC2-instnace
+5. Install Terraform and Git on EC2-instance
 
+ ### Domain Registration and DNS Setup with Terraform
+   This will register your domain (e.g., ikedesigns.com) and create subdomain records (e.g., nexus.ikedesigns.com, komet.ikedesigns.com, www.ikedesigns.com) pointing to your EC2 instance.
 
-2. Domain Registration and DNS Setup with Terraform
-
-Navigate to the DNS Management Directory:
- dns-management
-
+ ```bash
+ cd dns-management/domain-registration
+```
 Initialize Terraform:
 
 ```bash
 terraform init
+terraform plan -out <name>
 ```
-Review and Apply the Terraform Plan:
-
-This will register your domain (e.g., ikedesigns.com) and create subdomain records (e.g., nexus.ikedesigns.com, komet.ikedesigns.com, www.ikedesigns.com) pointing to your EC2 instance.
+Review and Apply the Terraform Plan
 
 ```bash
 terraform apply
@@ -145,7 +147,7 @@ docker-compose --version
 
 ## Deploy Application Services
 
-Install git and Clone ike-in-box repository
+Clone ike-in-box repository
 ```bash
 git clone https://github.com/ikmdev/ike-box.git
 
