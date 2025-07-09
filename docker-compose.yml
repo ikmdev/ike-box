@@ -26,7 +26,7 @@ services:
       - ~/Solor:/root/Solor
       - ./komet-data/users.ini:/root/Solor/users.ini:ro
     healthcheck:
-      test: ["CMD-SHELL", "echo ok"]
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/status/alive || wget --spider -q http://localhost:8080/status/alive || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -101,7 +101,7 @@ services:
       - komet
       - ikmdev-site
     healthcheck:
-      test: ["CMD-SHELL", "echo ok"]
+      test: ["CMD", "curl", "-f", "http://www.ikedesigns.com"]
       interval: 30s
       timeout: 10s
       retries: 3

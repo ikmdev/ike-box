@@ -64,7 +64,135 @@ komet - a web application requires login credentials which is defined in users.i
 
 ## Running on a Server
 
-To be updated soon!
+This is the complete steps that worked on Amazon linux by deploying a subdomain-based routing solution using Nginx, Docker Compose, and Terraform code on AWS to procure and set up a domain name and all of it’s necessary records for hosting IKE in a Box
+
+## Prerequisites - running on server
+ 1. DNS setup: Script for DNS setup in AWS or EasyDNS
+Here is the branch link for EasyDNS https://github.com/jlgrock/ike-box/tree/domain-script
+2. DNS setup with AWS: Domain Registration and DNS Setup with Terraform
+3. Install Docker and Docker Compose ( detail steps provided below)
+4. AWS EC2-instnace
+5. Install Terraform and Git on EC2-instance
+
+ ### Domain Registration and DNS Setup with Terraform
+   This will register your domain (e.g., ikedesigns.com) and create subdomain records (e.g., nexus.ikedesigns.com, komet.ikedesigns.com, www.ikedesigns.com) pointing to your EC2 instance.
+
+ ```bash
+ cd dns-management/domain-registration
+```
+Initialize Terraform:
+
+```bash
+terraform init
+terraform plan -out <name>
+```
+Review and Apply the Terraform Plan
+
+```bash
+terraform apply
+```
+Confirm the action when prompted.
+
+Verify DNS Records:
+
+After Terraform completes, verify your records in the AWS Route 53 console.
+It may take a few minutes for DNS propagation.
+
+### Connect to the Instance:
+```bash
+ssh -i /path/to/your-key.pem ec2-user@<EC2_PUBLIC_IP>
+example: ssh -i ~/.ssh/docker-deployment-key.pem ec2-user@18.119.11.183
+```
+### Update system
+
+```bash
+sudo dnf update -y
+```
+ 
+### Install Docker
+```bash
+sudo dnf install docker -y
+```
+### Start Docker
+```bash
+sudo systemctl start docker
+  
+```
+### Enable Docker to start on boot
+```bash
+sudo systemctl enable docker
+```
+### Add your user to the docker group (log out/in after this)
+```bash
+sudo usermod -aG docker $USER
+```
+ 
+### Install Docker Compose (latest version)
+```bash
+DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)
+sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+ 
+```
+ 
+### Make Docker Compose executable
+```bash
+sudo chmod +x /usr/local/bin/docker-compose
+  
+```
+### Verify installations
+```bash
+docker --version
+docker-compose --version
+```
+
+## Deploy Application Services
+
+Clone ike-in-box repository
+```bash
+git clone https://github.com/ikmdev/ike-box.git
+
+```
+## Run Docker Compose with Subdomain Profile
+Use Docker Compose profiles to switch between subdomain and path-based routing.
+
+
+Note: 
+* Only one Nginx service should be active at a time to avoid port conflicts.
+* Only the nginx-subdomain service is activated when you use the --profile subdomain flag
+* You may want to remove the container_name: nginx line or make the names unique if you ever run both at once.
+* No conflicting port mappings. (Only one Nginx service should run at a time on the same port.)
+
+
+### Build and Start Services:
+```bash
+docker-compose --profile subdomain --build
+docker-compose --profile subdomain up -d
+```
+To shut down the applications for Subdomain Profile, run the following command:
+
+  ```bash
+  docker-compose --profile subdomain down
+  ```
+Check Running Containers:
+```bash
+docker ps
+ 
+```
+Check Nginx Logs (if troubleshooting):
+```bash
+docker logs nginx-subdomain
+ 
+```
+
+### Access application with your Sub-domains
+
+Open your browser and visit:
+
+http://www.ikedesigns.com
+
+http://nexus.ikedesigns.com
+
+http://komet.ikedesigns.com
 
 You should configure the email address used by certbot for Let's Encrypt notifications:
 
