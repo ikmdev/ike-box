@@ -13,6 +13,10 @@ for CERTBOT_HOST in $CERTBOT_HOST; do
   FULLCHAIN="$CERT_PATH/fullchain.pem"
   PRIVKEY="$CERT_PATH/privkey.pem"
 
+  export CERT_PATH ${CERT_PATH:-//etc/letsencrypt/live/*.ikedesigns.com}
+  envsubst '$CERT_PATH' < ./subdomain/nginx.conf  > /etc/nginx/nginx.conf
+
+
   if [ ! -f "$FULLCHAIN" ] || [ ! -f "$PRIVKEY" ]; then
     echo "Certificates for $CERTBOT_HOST not found, generating self-signed certificates..."
 
