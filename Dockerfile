@@ -8,8 +8,11 @@ COPY html/* /usr/share/nginx/html/
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
+# Set env variable
+ENV  CERTBOT_HOST="localhost,www.ikedesigns.com,komet.ikedesigns.com,nexus.ikedesigns.com"
 # Make entrypoint script executable
 RUN chmod +x /docker-entrypoint.sh
 
 # Set entrypoint
 ENTRYPOINT ["/docker-entrypoint.sh"]
+
