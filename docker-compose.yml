@@ -44,6 +44,8 @@ services:
     build:
       context: .
     container_name: nginx
+    # environment:
+    #   - CERTBOT_HOST="localhost,www.ikedesigns.com,komet.ikedesigns.com,nexus.ikedesigns.com"
     ports:
       - "${NGINX_PORT:-80}:80"
       - "${NGINX_PORT:-443}:443"
@@ -119,6 +121,8 @@ services:
   certbot:
     image: certbot/certbot
     container_name: certbot
+    environment: 
+      - CERTBOT_HOST=*.ikedesigns.com"
     volumes:
       - certbot-data:/etc/letsencrypt
       - certbot-webroot:/var/www/certbot
