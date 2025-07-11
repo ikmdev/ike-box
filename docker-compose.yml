@@ -55,6 +55,7 @@ services:
     depends_on:
       - nexus
       - komet
+      - certbot
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:${NGINX_PORT:-80}/"]
       interval: 30s
@@ -104,6 +105,7 @@ services:
       - nexus
       - komet
       - ikmdev-site
+      - certbot
     healthcheck:
       test: ["CMD", "curl", "-f", "http://www.ikedesigns.com"]
       interval: 30s
