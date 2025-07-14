@@ -25,6 +25,7 @@ if [ ! -f /etc/letsencrypt/live/$DOMAIN/fullchain.pem ] || [ ! -f /etc/letsencry
     
     echo "Self-signed certificates generated."
 fi
+done
 
 # Start nginx
 exec nginx -g "daemon off;"
