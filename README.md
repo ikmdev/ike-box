@@ -27,7 +27,9 @@ intended to contain hardened images.
 ## DNS Management
 
 If you haven't created the DNS entries for the domains and subdomains that you want to use, you can do so by following 
+
 the instructions in the [DNS Management](dns-management/easy-dns-domain-registration/Easy-DNS-Mgmt.md) document. This will allow you to create the 
+
 necessary DNS entries for the domains and subdomains that you want to use with this repository.
 
 ## Running Locally
