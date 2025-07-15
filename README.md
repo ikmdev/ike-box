@@ -40,16 +40,9 @@ Follow the steps below to build and run static website on your local machine:
 
 3. Enter the following command to execute startup all of the applications:
 
-<<<<<<< HEAD
     ```bash
     docker-compose up -d 
     ```
-=======
-<<<<<<< Updated upstream
-  ```bash
-  docker-compose up -d 
-  ```
->>>>>>> 6da5ee7 (merging with upstream)
 
 4. To view the applications directly open your web browser and navigate to: 
 * Komet: http://localhost:8080
