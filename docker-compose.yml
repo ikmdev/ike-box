@@ -134,7 +134,7 @@ services:
       - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
 
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot certonly --webroot --webroot-path=/var/www/certbot --email devops@ikm.dev --agree-tos --no-eff-email --staging -d ${DOMAINS} --non-interactive --keep-until-expiring; sleep 30d & wait $${!}; done;'"
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot certonly --webroot --webroot-path=/var/www/certbot --email devops@ikm.dev --agree-tos --no-eff-email --staging -d www.ikedesigns.com --non-interactive --keep-until-expiring; sleep 30d & wait $${!}; done;'"
     networks:
       - rapidenv
     restart: always
