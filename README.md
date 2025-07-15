@@ -1,6 +1,6 @@
 # IKE in a Box
 
-This is all of the infrastructure needed for running the entire Integrated 
+This is all the infrastructure needed for running the entire Integrated 
 Knowledge Environment. 
 
 This will include the following:
@@ -24,6 +24,12 @@ intended to contain hardened images.
 * Install [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/)
   (or something compatible, such as on your local machine.
 
+## DNS Management
+
+If you haven't created the DNS entries for the domains and subdomains that you want to use, you can do so by following 
+the instructions in the [DNS Management](dns-management/DNS-MGMT.md) document. This will allow you to create the 
+necessary DNS entries for the domains and subdomains that you want to use with this repository.
+
 ## Running Locally
 
 Follow the steps below to build and run static website on your local machine:
@@ -34,22 +40,28 @@ Follow the steps below to build and run static website on your local machine:
 
 3. Enter the following command to execute startup all of the applications:
 
-  ```bash
-  docker-compose up -d 
-  ```
+    ```bash
+    docker-compose up -d 
+    ```
 
-4. To view the applications direct`ly open your web browser and navigate to: http://localhost
+4. To view the applications directly open your web browser and navigate to: 
+* Komet: http://localhost:8080
+* Nexus: http://localhost:8081
 
+* ```bash
+    docker-compose up -d 
+    ```
 
 5. To shut down the applications, run the following command:
 
-  ```bash
-  docker-compose down
-  ```
+    ```bash
+    docker-compose down
+    ```
 
 The application should now be running in the Docker container using Nginx as Reverse Proxy with the path based routing can be access as:
 
-[localhost](http://localhost) in your web browser.
+[localhost/nexus](http://localhost/nexus) and [localhost/komet](http://localhost/komet) in your web browser. If running on a remote server, replace localhost with
+the server’s IP address.
 
 Note: On the off chance that you have issues with running on the specific port on your computer, the
 docker-compose file is configurable to allow for other ports.  This can be run in the following way, substituting 8080
