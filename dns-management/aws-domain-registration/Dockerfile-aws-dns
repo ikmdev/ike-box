@@ -1,2 +1,7 @@
 FROM hashicorp/terraform:1.12.2
+# This Dockerfile is used to set up a Terraform environment for AWS DNS management.
+
+WORKDIR /aws-terraform
+
+ENTRYPOINT ["/bin/sh", "-c", "terraform init && terraform plan"]
 

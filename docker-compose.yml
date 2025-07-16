@@ -162,7 +162,7 @@ services:
     build:
       context: ./
       dockerfile: dns-management/aws-domain-registration/Dockerfile-aws-dns
-    container_name: dns-management
+    container_name: easy-dns-setup
     volumes:
       - ./.env:/.env
     networks:
@@ -176,7 +176,7 @@ services:
     build:
       context: ./
       dockerfile: dns-management/easy-dns-domain-registration/Dockerfile-easydns
-    container_name: dns-management
+    container_name: easy-dns-setup
     volumes:
       - ./.env:/.env
       - ./dns-management/aws-domain-registration/terraform:/aws-terraform
