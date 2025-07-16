@@ -8,9 +8,8 @@ fi
 
 while :; do
   echo "BASE DOMAIN: ${BASE_DOMAIN}"
-  certbot certonly --webroot --webroot-path=/var/www/certbot \
-    --email devops@ikm.dev --agree-tos --no-eff-email \
-    -d "${BASE_DOMAIN}" -d "*.${BASE_DOMAIN}" --non-interactive --keep-until-expiring
+  certbot certonly --email devops@ikm.dev --agree-tos --no-eff-email \
+    -d "${BASE_DOMAIN}" -d "*.${BASE_DOMAIN}" --non-interactive --keep-until-expiring --manual
   certbot renew --webroot --webroot-path=/var/www/certbot --non-interactive
   sleep 12h & wait $!
 done
