@@ -5,4 +5,4 @@ RUN apt-get update && apt-get install -y openssl gettext-base && rm -rf /var/lib
 
 # Copy files
 COPY html/* /usr/share/nginx/html/
-COPY path-based/nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf

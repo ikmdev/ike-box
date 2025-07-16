@@ -40,10 +40,31 @@ services:
         max-file: "3"
     profiles: ["path-based", "subdomain"]
 
-  nginx:
+  ikmdev-site:
+    image: ikebox/ikmdev-site:1.0.0
+    container_name: ikmdev-site
+    volumes:
+      - ikmdev-data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - rapidenv
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    profiles: ["path-based", "subdomain"]
+
+  nginx-path-based:
     build:
       context: .
-    container_name: nginx
+      dockerfile: path-based/Dockerfile
+    container_name: nginx-path-based
     environment:
       - DOMAINS=${NGINX_DOMAINS}
     ports:
@@ -73,30 +94,10 @@ services:
         max-file: "3"
     profiles: ["path-based"]
 
-  ikmdev-site:
-      image: ikebox/ikmdev-site:1.0.0
-      container_name: ikmdev-site
-      volumes:
-      - ikmdev-data:/data
-      healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost/"]
-        interval: 30s
-        timeout: 10s
-        retries: 3
-      networks:
-      - rapidenv
-      restart: unless-stopped
-      logging:
-       driver: "json-file"
-       options:
-        max-size: "10m"
-        max-file: "3"
-      profiles: ["path-based", "subdomain"]
-
   nginx-subdomain:
     build:
       context: .
-      dockerfile: Dockerfile-subdomain-web
+      dockerfile: subdomain/Dockerfile
     container_name: nginx-subdomain
     ports:
       - "${NGINX_PORT:-80}:80"
@@ -133,7 +134,7 @@ services:
     volumes:
       - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
-      - ./certbot-nginx-entrypoint.sh:/certbot-nginx-entrypoint.sh:ro
+      - ./subdomain/certbot-entrypoint.sh:/certbot-entrypoint.sh:ro
     entrypoint: "/certbot-nginx-entrypoint.sh"
     networks:
       - rapidenv
@@ -148,7 +149,7 @@ services:
     volumes:
       - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
-      - ./certbot-entrypoint-initialize.sh:/certbot-entrypoint-initialize.sh:ro
+      - ./subdomain/certbot-entrypoint-initialize.sh:/certbot-entrypoint-initialize.sh:ro
     entrypoint: "/certbot-entrypoint-initialize.sh"
     networks:
       - rapidenv
