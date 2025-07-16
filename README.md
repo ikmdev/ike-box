@@ -32,6 +32,44 @@ the instructions in the [DNS Management](dns-management/easy-dns-domain-registra
 
 necessary DNS entries for the domains and subdomains that you want to use with this repository.
 
+## Domain Configuration
+
+This project uses a centralized domain configuration approach. All domain names are defined in a single `.env` file at the root of the project. This makes it easy to change the domain name across all services without having to modify multiple files.
+
+### Setting Up Domain Configuration
+
+1. The repository includes a default `.env` file with the following structure:
+
+    ```bash
+    # Domain configuration
+    BASE_DOMAIN=ikedesigns.com
+    WWW_SUBDOMAIN=www.${BASE_DOMAIN}
+    NEXUS_SUBDOMAIN=nexus.${BASE_DOMAIN}
+    KOMET_SUBDOMAIN=komet.${BASE_DOMAIN}
+    IKMDEV_SUBDOMAIN=ikmdev.${BASE_DOMAIN}
+
+    # Combined domain lists for services
+    NGINX_DOMAINS="*.${BASE_DOMAIN}"
+    CERTBOT_DOMAINS="${BASE_DOMAIN},${WWW_SUBDOMAIN},${NEXUS_SUBDOMAIN},${KOMET_SUBDOMAIN},${IKMDEV_SUBDOMAIN}"
+
+    # Other configuration
+    NGINX_PORT=80
+    ```
+
+2. To use a different domain, simply edit the `BASE_DOMAIN` value in the `.env` file. All other configurations will automatically use the updated domain.
+
+3. For Terraform-based DNS management, run the provided scripts to generate configuration files from templates:
+
+    ```bash
+    # For domain registration
+    cd dns-management/aws-domain-registration
+    ./generate-tfvars.sh
+
+    # For subdomain records
+    cd dns-management/aws-domain-registration/subdomain-records
+    ./generate-tfvars.sh
+    ```
+
 ## Running Locally
 
 Follow the steps below to build and run static website on your local machine:
@@ -122,7 +160,7 @@ example: ssh -i ~/.ssh/docker-deployment-key.pem ec2-user@18.119.11.183
 ```bash
 sudo dnf update -y
 ```
- 
+
 ### Install Docker
 ```bash
 sudo dnf install docker -y
@@ -130,7 +168,7 @@ sudo dnf install docker -y
 ### Start Docker
 ```bash
 sudo systemctl start docker
-  
+
 ```
 ### Enable Docker to start on boot
 ```bash
@@ -140,18 +178,18 @@ sudo systemctl enable docker
 ```bash
 sudo usermod -aG docker $USER
 ```
- 
+
 ### Install Docker Compose (latest version)
 ```bash
 DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)
 sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
- 
+
 ```
- 
+
 ### Make Docker Compose executable
 ```bash
 sudo chmod +x /usr/local/bin/docker-compose
-  
+
 ```
 ### Verify installations
 ```bash
@@ -190,12 +228,12 @@ To shut down the applications for Subdomain Profile, run the following command:
 Check Running Containers:
 ```bash
 docker ps
- 
+
 ```
 Check Nginx Logs (if troubleshooting):
 ```bash
 docker logs nginx-subdomain
- 
+
 ```
 
 ### Access application with your Sub-domains
@@ -208,6 +246,12 @@ http://nexus.ikedesigns.com
 
 http://komet.ikedesigns.com
 
+### SSL Certificates with Let's Encrypt
+
+This project uses Certbot to automatically obtain and renew SSL certificates from Let's Encrypt for your domains.
+
+#### Certificate Configuration
+
 You should configure the email address used by certbot for Let's Encrypt notifications:
 
 ```bash
@@ -219,6 +263,17 @@ Or combine multiple environment variables:
 ```bash
 NGINX_PORT=8080 CERTBOT_EMAIL=your.email@example.com docker compose up -d
 ```
+
+#### Certificate Renewal
+
+Certificates are automatically obtained for all domains specified in the DOMAINS environment variable in the docker-compose.yml file. The certbot service is configured to:
+
+1. Obtain certificates for each domain if they don't exist
+2. Check for renewals every 12 hours
+3. Automatically renew certificates when they're within 30 days of expiration
+4. Persist certificates in the ./certbot/conf directory
+
+No manual intervention is required for certificate renewal as long as the certbot service is running.
 
 ## Issues and Contributions
 
