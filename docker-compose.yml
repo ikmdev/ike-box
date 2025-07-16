@@ -129,7 +129,7 @@ services:
     image: certbot/certbot
     container_name: certbot
     environment:
-      - DOMAINS=${CERTBOT_DOMAINS}
+      - BASE_DOMAIN=${BASE_DOMAIN}
     volumes:
       - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
@@ -138,6 +138,24 @@ services:
     networks:
       - rapidenv
     restart: unless-stopped
+    profiles: ["subdomain"]
+
+  certbot-initialize:
+    image: certbot/certbot
+    container_name: certbot
+    environment:
+      - BASE_DOMAIN=${BASE_DOMAIN}
+    volumes:
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot-entrypoint-initialize.sh:/certbot-entrypoint-initialize.sh:ro
+    entrypoint: "/certbot-entrypoint-initialize.sh"
+    networks:
+      - rapidenv
+    restart: no
+    stdin_open: true
+    tty: true
+    profiles: ["initialize"]
 
 volumes:
   nexus-data:

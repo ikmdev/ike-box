@@ -7,7 +7,7 @@ RUN pip install --no-cache-dir requests
 
 # Copy scripts and configuration files
 COPY create_domains.py delete_domains.py /app/
-COPY config.json domains.txt /app/
+COPY ../config.json domains.txt /app/
 
 # Make scripts executable
 RUN chmod +x /app/create_domains.py /app/delete_domains.py

@@ -1,13 +1,11 @@
-domain_name = "${BASE_DOMAIN}"
-aws_region  = "us-east-2"
-target_ip   = "18.119.11.183"
+domain_name    = "${BASE_DOMAIN}"
+target_ip      = "${TARGET_IP}"
+acme_challenge = "${ACME_CHALLENGE}"
 
 subdomains = [
   "www",
   "nexus",
   "komet",
-  "gitea",
-  "jenkins"
 ]
 
 contact_info = {
