@@ -158,6 +158,36 @@ services:
     tty: true
     profiles: ["initialize"]
 
+  easy-dns-setup:
+    build:
+      context: ./
+      dockerfile: dns-management/aws-domain-registration/Dockerfile-aws-dns
+    container_name: dns-management
+    volumes:
+      - ./.env:/.env
+    networks:
+      - rapidenv
+    restart: "no"
+    stdin_open: true
+    tty: true
+    profiles: ["easydns-setup"]
+
+  aws-dns-setup:
+    build:
+      context: ./
+      dockerfile: dns-management/easy-dns-domain-registration/Dockerfile-easydns
+    container_name: dns-management
+    volumes:
+      - ./.env:/.env
+      - ./dns-management/aws-domain-registration/terraform:/aws-terraform
+      - ./dns-management/aws-domain-registration/aws-terraform-entryscript.sh:/aws-terraform-entryscript.sh
+    networks:
+      - rapidenv
+    restart: "no"
+    stdin_open: true
+    tty: true
+    profiles: ["aws-dns-setup"]
+
 volumes:
   nexus-data:
   komet-data:
