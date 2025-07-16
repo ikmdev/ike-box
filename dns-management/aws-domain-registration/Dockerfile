@@ -31,6 +31,6 @@ else\n\
     echo "  docker run [options] <image> delete                    # Delete all subdomains"\n\
     echo "  docker run [options] <image> delete dev test staging   # Delete only dev, test, and staging subdomains"\n\
     exit 1\n\
-fi' > /app/entrypoint.sh && chmod +x /app/entrypoint.sh
+fi' > /app/nginx-entrypoint.sh && chmod +x /app/nginx-entrypoint.sh
 
 ENTRYPOINT ["/app/entrypoint.sh"]

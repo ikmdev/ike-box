@@ -133,8 +133,8 @@ services:
     volumes:
       - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
-      - ./certbot-entrypoint.sh:/certbot-entrypoint.sh:ro
-    entrypoint: "/certbot-entrypoint.sh"
+      - ./certbot-nginx-entrypoint.sh:/certbot-nginx-entrypoint.sh:ro
+    entrypoint: "/certbot-nginx-entrypoint.sh"
     networks:
       - rapidenv
     restart: unless-stopped
