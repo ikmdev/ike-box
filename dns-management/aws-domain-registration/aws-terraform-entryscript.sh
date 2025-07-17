@@ -1,7 +1,7 @@
 #!/bin/sh
 
 set -x
-
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ENV_FILE="/.env"
 
 # Source .env file if it exists
