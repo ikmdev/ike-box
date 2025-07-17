@@ -7,7 +7,7 @@ WORKDIR /aws-terraform
 COPY terraform /aws-terraform
 
 # Copy entryscript
-COPY aws-terraform-entryscript.sh /aws-terraform-entryscript.sh
+COPY ./dns-management/aws-domain-registration/aws-terraform-entryscript.sh /aws-terraform-entryscript.sh
 RUN chmod +x /aws-terraform-entryscript.sh
 
 # Set entrypoint
