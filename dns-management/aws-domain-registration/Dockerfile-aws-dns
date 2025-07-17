@@ -3,7 +3,8 @@ FROM hashicorp/terraform:1.12.2
 
 WORKDIR /aws-terraform
 
-ENTRYPOINT ["/bin/sh", "-c", "terraform init && terraform plan"]
+# Copy Terraform configuration files
+COPY terraform /aws-terraform
 
 # Copy entryscript
 COPY aws-terraform-entryscript.sh /aws-terraform-entryscript.sh

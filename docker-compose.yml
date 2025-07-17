@@ -187,6 +187,7 @@ services:
     stdin_open: true
     tty: true
     profiles: ["aws-dns-setup"]
+    entrypoint: ["terraform", "plan"]  # This will run 'terraform plan' instead of your script
 
 volumes:
   nexus-data:
