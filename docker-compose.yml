@@ -94,26 +94,6 @@ services:
         max-file: "3"
     profiles: ["path-based"]
 
-  # ikmdev-site:
-  #     image: ikebox/ikmdev-site:1.0.0
-  #     container_name: ikmdev-site
-  #     volumes:
-  #     - ikmdev-data:/data
-  #     healthcheck:
-  #       test: ["CMD", "curl", "-f", "http://localhost/"]
-  #       interval: 30s
-  #       timeout: 10s
-  #       retries: 3
-  #     networks:
-  #     - rapidenv
-  #     restart: unless-stopped
-  #     logging:
-  #      driver: "json-file"
-  #      options:
-  #       max-size: "10m"
-  #       max-file: "3"
-  #     profiles: ["subdomain"]
-
   nginx-subdomain:
     build:
       context: .
@@ -150,22 +130,76 @@ services:
     image: certbot/certbot
     container_name: certbot
     environment:
-      - DOMAINS='*.ikedesigns.com'
+      - BASE_DOMAIN=${BASE_DOMAIN}
     volumes:
       - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
-
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot certonly --webroot --webroot-path=/var/www/certbot --email devops@ikm.dev --agree-tos --no-eff-email --staging -d www.ikedesigns.com --non-interactive --keep-until-expiring; sleep 30d & wait $${!}; done;'"
+      - ./subdomain/certbot-entrypoint.sh:/certbot-entrypoint.sh:ro
+    entrypoint: "/certbot-nginx-entrypoint.sh"
     networks:
       - rapidenv
-    restart: always
+    restart: unless-stopped
+    profiles: ["subdomain"]
+
+  certbot-initialize:
+    image: certbot/certbot
+    container_name: certbot
+    environment:
+      - BASE_DOMAIN=${BASE_DOMAIN}
+    volumes:
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+      - ./subdomain/certbot-entrypoint-initialize.sh:/certbot-entrypoint-initialize.sh:ro
+    entrypoint: "/certbot-entrypoint-initialize.sh"
+    networks:
+      - rapidenv
+    restart: no
+    stdin_open: true
+    tty: true
+    profiles: ["initialize"]
+
+  easy-dns-setup:
+    build:
+      context: ./
+      dockerfile: dns-management/aws-domain-registration/Dockerfile-aws-dns
+    container_name: easy-dns-setup
+    volumes:
+      - ./.env:/.env
+    networks:
+      - rapidenv
+    restart: "no"
+    stdin_open: true
+    tty: true
+    profiles: ["easydns-setup"]
+
+  aws-dns-setup:
+    build:
+      context: ./
+      dockerfile: dns-management/easy-dns-domain-registration/Dockerfile-easydns
+    container_name: aws-dns-setup
+    environment:
+     - AWS_REGION=${AWS_REGION}
+      - DOMAIN_NAME=${DOMAIN_NAME}
+      - ZONE_ID=${ZONE_ID}
+      - DNS_CHALLENGE_VALUE=${DNS_CHALLENGE_VALUE}
+    volumes:
+      - ./.env:/.env
+      - ./dns-management/aws-domain-registration/terraform:/aws-terraform
+      - ./dns-management/aws-domain-registration/aws-terraform-entryscript.sh:/aws-terraform-entryscript.sh
+    networks:
+      - rapidenv
+    restart: "no"
+    stdin_open: true
+    tty: true
+    profiles: ["aws-dns-setup"]
+
 volumes:
   nexus-data:
   komet-data:
   nginx-logs:
   ikmdev-data:
   certbot-data:
-  certbot-webroot:
+  aws-terraform-data:
 
 networks:
   rapidenv:

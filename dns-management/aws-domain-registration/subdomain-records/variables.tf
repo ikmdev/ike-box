@@ -14,3 +14,8 @@ variable "subdomains" {
   type        = list(string)
 }
 
+variable "dns_challenge_value"{
+  description = "DNS challenge value for domain verification"
+  type        = string
+  default     = "sjgBKfaMnZSecaKkYkI8Ayx-CvGH8b1IMmTKiTXc_Q"
+}
