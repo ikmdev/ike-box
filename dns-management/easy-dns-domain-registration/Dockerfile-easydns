@@ -7,7 +7,7 @@ RUN pip install --no-cache-dir requests
 
 # Copy scripts and configuration files
 COPY create_domains.py delete_domains.py /app/
-COPY config.json domains.txt /app/
+COPY ../config.json domains.txt /app/
 
 # Make scripts executable
 RUN chmod +x /app/create_domains.py /app/delete_domains.py
@@ -31,6 +31,6 @@ else\n\
     echo "  docker run [options] <image> delete                    # Delete all subdomains"\n\
     echo "  docker run [options] <image> delete dev test staging   # Delete only dev, test, and staging subdomains"\n\
     exit 1\n\
-fi' > /app/entrypoint.sh && chmod +x /app/entrypoint.sh
+fi' > /app/nginx-entrypoint.sh && chmod +x /app/nginx-entrypoint.sh
 
 ENTRYPOINT ["/app/entrypoint.sh"]

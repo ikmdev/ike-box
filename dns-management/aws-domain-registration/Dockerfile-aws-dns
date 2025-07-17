@@ -1,0 +1,15 @@
+FROM hashicorp/terraform:1.12.2
+# This Dockerfile is used to set up a Terraform environment for AWS DNS management.
+
+WORKDIR /aws-terraform
+
+# Copy Terraform configuration files
+COPY terraform /aws-terraform
+
+# Copy entryscript
+COPY aws-terraform-entryscript.sh /aws-terraform-entryscript.sh
+RUN chmod +x /aws-terraform-entryscript.sh
+
+# Set entrypoint
+ENTRYPOINT ["/aws-terraform-entryscript.sh"]
+

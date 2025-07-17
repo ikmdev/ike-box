@@ -229,3 +229,13 @@ Temporary Items
 ###################
 **.zip
 htmlReport
+
+###################
+# Docker specific
+###################
+docker/
+
+###################
+# Certbot specific
+###################
+certbot/

@@ -40,12 +40,33 @@ services:
         max-file: "3"
     profiles: ["path-based", "subdomain"]
 
-  nginx:
+  ikmdev-site:
+    image: ikebox/ikmdev-site:1.0.0
+    container_name: ikmdev-site
+    volumes:
+      - ikmdev-data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - rapidenv
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    profiles: ["path-based", "subdomain"]
+
+  nginx-path-based:
     build:
       context: .
-    container_name: nginx
+      dockerfile: path-based/Dockerfile
+    container_name: nginx-path-based
     environment:
-      - DOMAINS='*.ikedesigns.com'
+      - DOMAINS=${NGINX_DOMAINS}
     ports:
       - "${NGINX_PORT:-80}:80"
       - "${NGINX_PORT:-443}:443"
@@ -73,30 +94,30 @@ services:
         max-file: "3"
     profiles: ["path-based"]
 
-  ikmdev-site:
-      image: ikebox/ikmdev-site:1.0.0
-      container_name: ikmdev-site
-      volumes:
-      - ikmdev-data:/data
-      healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost/"]
-        interval: 30s
-        timeout: 10s
-        retries: 3
-      networks:
-      - rapidenv
-      restart: unless-stopped
-      logging:
-       driver: "json-file"
-       options:
-        max-size: "10m"
-        max-file: "3"
-      profiles: ["subdomain"]
+  # ikmdev-site:
+  #     image: ikebox/ikmdev-site:1.0.0
+  #     container_name: ikmdev-site
+  #     volumes:
+  #     - ikmdev-data:/data
+  #     healthcheck:
+  #       test: ["CMD", "curl", "-f", "http://localhost/"]
+  #       interval: 30s
+  #       timeout: 10s
+  #       retries: 3
+  #     networks:
+  #     - rapidenv
+  #     restart: unless-stopped
+  #     logging:
+  #      driver: "json-file"
+  #      options:
+  #       max-size: "10m"
+  #       max-file: "3"
+  #     profiles: ["subdomain"]
 
   nginx-subdomain:
     build:
       context: .
-      dockerfile: Dockerfile-subdomain-web
+      dockerfile: subdomain/Dockerfile
     container_name: nginx-subdomain
     ports:
       - "${NGINX_PORT:-80}:80"
@@ -111,7 +132,7 @@ services:
       - ikmdev-site
       - certbot
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://www.ikedesigns.com"]
+      test: ["CMD", "curl", "-f", "http://${WWW_SUBDOMAIN}"]
       interval: 30s
       timeout: 10s
       retries: 3
