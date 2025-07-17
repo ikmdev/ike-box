@@ -175,13 +175,8 @@ services:
   aws-dns-setup:
     build:
       context: ./
-      dockerfile: dns-management/easy-dns-domain-registration/Dockerfile-easydns
+      dockerfile: dns-management/aws-domain-registration/Dockerfile-aws-dns
     container_name: aws-dns-setup
-    environment:
-     - AWS_REGION=${AWS_REGION}
-      - DOMAIN_NAME=${DOMAIN_NAME}
-      - ZONE_ID=${ZONE_ID}
-      - DNS_CHALLENGE_VALUE=${DNS_CHALLENGE_VALUE}
     volumes:
       - ./.env:/.env
       - ./dns-management/aws-domain-registration/terraform:/aws-terraform
