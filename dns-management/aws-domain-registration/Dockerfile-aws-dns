@@ -4,7 +4,7 @@ FROM hashicorp/terraform:1.12.2
 WORKDIR /aws-terraform
 
 # Copy Terraform configuration files
-COPY terraform /aws-terraform
+COPY ./dns-management/aws-domain-registration/terraform /aws-terraform
 
 # Copy entryscript
 COPY ./dns-management/aws-domain-registration/aws-terraform-entryscript.sh /aws-terraform-entryscript.sh
