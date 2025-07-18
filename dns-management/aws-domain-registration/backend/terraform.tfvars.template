@@ -1,0 +1,3 @@
+aws_region         = "${AWS_REGION}"
+s3_bucket_name     = "tfstate-${BASE_DOMAIN}"
+dynamodb_table_name = "${BASE_DOMAIN}-terraform-lock"

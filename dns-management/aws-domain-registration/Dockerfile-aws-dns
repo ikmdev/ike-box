@@ -6,7 +6,8 @@ WORKDIR /aws-terraform
 
 RUN apt-get update && apt-get install -y gettext-base
 
-# Copy Terraform configuration files
+# Copy backend and infra configuration files
+COPY ./dns-management/aws-domain-registration/backend /aws-backend
 COPY ./dns-management/aws-domain-registration/infra /aws-infra
 
 # Copy entryscript

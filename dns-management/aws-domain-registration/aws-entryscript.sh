@@ -30,7 +30,24 @@ if ! echo "$BASE_DOMAIN" | grep -Eq '^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$'; then
   exit 1
 fi
 
-# Substitute variables in terraform.tfvars.template and output to terraform.tfvars
+
+# --- Apply backend first ---
+BACKEND_TEMPLATE="/aws-backend/terraform.tfvars.template"
+BACKEND_VARS="/aws-backend/terraform.tfvars"
+
+if [ ! -f "$BACKEND_TEMPLATE" ]; then
+  echo "Backend template file not found: $BACKEND_TEMPLATE"
+  exit 1
+fi
+envsubst < "$BACKEND_TEMPLATE" > "$BACKEND_VARS"
+echo "Generated $BACKEND_VARS from $BACKEND_TEMPLATE using .env variables."
+cat $BACKEND_VARS
+
+cd /aws-backend || { echo "Failed to change directory to /aws-backend"; exit 1; }
+tofu init || { echo "Tofu backend init failed"; exit 1; }
+tofu apply -auto-approve || { echo "Tofu backend apply failed"; exit 1; }
+
+# --- Then apply infra ---
 TEMPLATE_FILE="/aws-infra/terraform.tfvars.template"
 OUTPUT_FILE="/aws-infra/terraform.tfvars"
 
@@ -38,27 +55,17 @@ if [ ! -f "$TEMPLATE_FILE" ]; then
   echo "Template file not found: $TEMPLATE_FILE"
   exit 1
 fi
-
-# Replace variables in the template (assumes ${VAR} syntax)
 envsubst < "$TEMPLATE_FILE" > "$OUTPUT_FILE"
 echo "Generated $OUTPUT_FILE from $TEMPLATE_FILE using .env variables."
-
 cat $OUTPUT_FILE
 
-# Change to the terraform directory
 cd /aws-infra || { echo "Failed to change directory to /aws-infra"; exit 1; }
-
-# Initialize Terraform
 tofu init \
     --backend-config="region=${AWS_REGION}" \
     --backend-config="bucket=tfstate-${BASE_DOMAIN}" \
     --backend-config="key=${BASE_DOMAIN}-dnshosting.tfstate" \
     --backend-config="dynamodb_table=${BASE_DOMAIN}-terraform-lock" \
-    || { echo "Terraform initialization failed"; exit 1; }
-
-#  Plan Terraform configuration
-tofu plan || { echo "Terraform plan failed"; exit 1; }
-
-# Apply Terraform configuration automatically
-tofu apply -auto-approve || { echo "Terraform apply failed"; exit 1; }
+    || { echo "Tofu infra initialization failed"; exit 1; }
+tofu plan || { echo "Tofu infra plan failed"; exit 1; }
+tofu apply -auto-approve || { echo "Tofu infra apply failed"; exit 1; }
 
