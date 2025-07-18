@@ -31,11 +31,13 @@ fi
 envsubst < "$TEMPLATE_FILE" > "$OUTPUT_FILE"
 echo "Generated $OUTPUT_FILE from $TEMPLATE_FILE using .env variables."
 
+cat $OUTPUT_FILE
+
 # Change to the terraform directory
 cd /aws-terraform || { echo "Failed to change directory to /aws-terraform"; exit 1; }
 
 # Initialize Terraform
-tofu init -backend-config=backend.tfvars || { echo "Terraform initialization failed"; exit 1; }
+tofu init || { echo "Terraform initialization failed"; exit 1; }
 
 #  Plan Terraform configuration
 tofu plan || { echo "Terraform plan failed"; exit 1; }
