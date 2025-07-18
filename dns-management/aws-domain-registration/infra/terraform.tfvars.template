@@ -3,7 +3,6 @@ aws_region     = "${AWS_REGION}"
 domain_name    = "${BASE_DOMAIN}"
 target_ip      = "${TARGET_IP}"
 acme_challenge = "${ACME_CHALLENGE}"
-contact_info = "${CONTACT_INFO}"
 
 subdomains = [
   "www",
