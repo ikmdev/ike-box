@@ -9,14 +9,14 @@ subdomains = [
 ]
 
 contact_info = {
-  address_line_1 = "6333 Chatham Glenn way"
-  city           = "Harrisburg"
+  address_line_1 = "${ADDRESS_LINE_1}"
+  city           = "${CITY}"
   contact_type   = "PERSON"
   country_code   = "US"
   email          = "${ADMIN_EMAIL}"
   first_name     = "${ADMIN_NAME}"
-  last_name      = "Doe"
+  last_name      = "${LAST_NAME}"
   phone_number   = "${ADMIN_PHONE}"
-  state          = "PA"
-  zip_code       = "17111"
+  state          = "${STATE}"
+  zip_code       = "${ZIP_CODE}"
 }

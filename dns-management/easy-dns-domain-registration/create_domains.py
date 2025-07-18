@@ -200,6 +200,27 @@ def main():
 
     args = parser.parse_args()
 
+    # Load .env file for admin contact info
+    try:
+        from dotenv import load_dotenv
+        env_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..', '.env'))
+        if os.path.exists(env_path):
+            load_dotenv(env_path)
+        else:
+            logger.warning(f".env file not found at {env_path}")
+    except ImportError:
+        logger.warning("python-dotenv not installed, .env file will not be loaded.")
+
+    admin_email = os.getenv("ADMIN_EMAIL", "admin@example.com")
+    admin_phone = os.getenv("ADMIN_PHONE", "+10000000000")
+    admin_name = os.getenv("ADMIN_NAME", "Admin User")
+
+    address_line_1 = os.getenv("ADDRESS_LINE_1", "")
+    city = os.getenv("CITY", "")
+    last_name = os.getenv("LAST_NAME", "")
+    state = os.getenv("STATE", "")
+    zip_code = os.getenv("ZIP_CODE", "")
+
     # Load configuration
     config = load_config(args.config)
 
