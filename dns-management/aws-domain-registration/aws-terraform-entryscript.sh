@@ -19,10 +19,16 @@ if ! echo "$BASE_DOMAIN" | grep -Eq '^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$'; then
 fi
 
 # Substitute variables in terraform.tfvars.template and output to terraform.tfvars
+BACKEND_TEMPLATE_FILE="/aws-terraform/backend.tfvars.template"
+BACKEND_OUTPUT_FILE="/aws-terraform/terraform.tfvars"
+
 TEMPLATE_FILE="/aws-terraform/terraform.tfvars.template"
 OUTPUT_FILE="/aws-terraform/terraform.tfvars"
 
-
+if [ ! -f "$BACKEND_TEMPLATE_FILE" ]; then
+  echo "Backend Template file not found: $BACKEND_TEMPLATE_FILE"
+  exit 1
+fi
 
 if [ ! -f "$TEMPLATE_FILE" ]; then
   echo "Template file not found: $TEMPLATE_FILE"
@@ -31,12 +37,15 @@ fi
 
 # Replace variables in the template (assumes ${VAR} syntax)
 envsubst < "$TEMPLATE_FILE" > "$OUTPUT_FILE"
-echo "Generated $OUTPUT_FILE from $TEMPLATE_FILE using .env variables."
+echo "Generated $OUTPUT_FILE from $BACKEND_TEMPLATE_FILE using .env variables."
+
+envsubst < "$TEMPLATE_FILE" > "$BACKEND_OUTPUT_FILE"
+echo "Generated $BACKEND_OUTPUT_FILE from $TEMPLATE_FILE using .env variables."
 
 # Change to the terraform directory
 cd /aws-terraform || { echo "Failed to change directory to /aws-terraform"; exit 1; }
 # Initialize Terraform
- terraform init -reconfigure || { echo "Terraform initialization failed"; exit 1; }
+ terraform init -backend-config=backend.tfvars || { echo "Terraform initialization failed"; exit 1; }
 #  Plan Terraform configuration
 terraform plan || { echo "Terraform plan failed"; exit 1; }
 # Apply Terraform configuration automatically
