@@ -179,7 +179,7 @@ services:
     container_name: aws-dns-setup
     volumes:
       - ./.env:/.env
-      - ./dns-management/aws-domain-registration/terraform:/aws-infra
+      - ./dns-management/aws-domain-registration/infra:/aws-infra
       - ./dns-management/aws-domain-registration/aws-entryscript.sh:/aws-entryscript.sh
     networks:
       - rapidenv
@@ -194,7 +194,6 @@ volumes:
   nginx-logs:
   ikmdev-data:
   certbot-data:
-  aws-terraform-data:
 
 networks:
   rapidenv:
