@@ -234,6 +234,10 @@ def main():
     # Parse domains file
     domains = parse_domains_file(args.domains)
 
+
+    # Get ACME challenge value from env
+    acme_challenge = os.getenv("ACME_CHALLENGE", "")
+
     # Create domains and subdomains
     for domain_info in domains:
         domain_name = domain_info["name"]
@@ -252,6 +256,11 @@ def main():
             result = client.create_subdomain(domain_name, subdomain)
             if "error" in result and "info" not in result:
                 logger.warning(f"Could not create subdomain {subdomain}.{domain_name}, there was an error")
+
+        # Create ACME challenge TXT record if value is set
+        if acme_challenge:
+            logger.info(f"Creating ACME challenge TXT record for {domain_name}")
+            client.create_subdomain(domain_name, "_acme-challenge", record_type="TXT", content=acme_challenge)
 
 if __name__ == "__main__":
     main()

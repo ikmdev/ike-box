@@ -229,16 +229,28 @@ def main():
     # Parse domains file
     domains = parse_domains_file(args.domains)
     
+
+    # Get ACME challenge value from env
+    acme_challenge = os.getenv("ACME_CHALLENGE", "")
+
     # Delete subdomains
     for domain_info in domains:
         domain_name = domain_info["name"]
-        
+
         for subdomain in domain_info["subdomains"]:
             # If specific subdomains were provided, only delete those
             if args.subdomains and subdomain not in args.subdomains:
                 continue
-            
             client.delete_subdomain(domain_name, subdomain)
+
+        # Delete ACME challenge TXT record if value is set
+        if acme_challenge:
+            logger.info(f"Deleting ACME challenge TXT record for {domain_name}")
+            # Find and delete TXT record for _acme-challenge
+            records = client.get_records(domain_name)
+            for record in records:
+                if record.get("host") == "_acme-challenge" and record.get("type") == "TXT":
+                    client.delete_record(domain_name, record.get("id"))
 
 if __name__ == "__main__":
     main()
