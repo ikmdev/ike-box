@@ -4,9 +4,9 @@ FROM scalr/opentofu:1.9.2
 WORKDIR /aws-terraform
 # Install necessary packages  envsubst (provided by the gettext package)
 
-RUN apk add --no-cache \
-    curl \
-    gettext
+# RUN apk add --no-cache \
+#     curl \
+#     gettext
 
 # Copy Terraform configuration files
 COPY ./dns-management/aws-domain-registration/terraform /aws-terraform
