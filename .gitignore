@@ -246,3 +246,9 @@ certbot/
 *.tfstate
 .terraform.lock.hcl
 .terraform/
+
+###################
+# Ignore generated Terraform files
+
+dns-management/aws-domain-registration/terraform/backend.tfvars
+dns-management/aws-domain-registration/terraform/terraform.tfvars
