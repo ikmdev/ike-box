@@ -10,10 +10,6 @@ terraform {
     }
   }
     backend "s3" {
-      region         = "us-east-1"
-      bucket         = "tfstate-${var.domain_name}"
-      key            = "${var.domain_name}-dnshosting.tfstate"
-      dynamodb_table = "${var.domain_name}-terraform-lock"
       encrypt        = true
     }
 }
