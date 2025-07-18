@@ -45,7 +45,15 @@ cat $BACKEND_VARS
 
 cd /aws-backend || { echo "Failed to change directory to /aws-backend"; exit 1; }
 tofu init || { echo "Tofu backend init failed"; exit 1; }
-tofu apply -auto-approve || { echo "Tofu backend apply failed"; exit 1; }
+
+# Apply backend, ignore errors for already existing resources
+tofu apply -auto-approve -refresh=false || {
+  if grep -q "already exists" tofu.log; then
+    echo "Some resources already exist, continuing..."
+  else
+    echo "Tofu backend apply failed"; exit 1;
+  fi
+}
 
 # --- Then apply infra ---
 TEMPLATE_FILE="/aws-infra/terraform.tfvars.template"
@@ -67,5 +75,13 @@ tofu init \
     --backend-config="dynamodb_table=${BASE_DOMAIN}-terraform-lock" \
     || { echo "Tofu infra initialization failed"; exit 1; }
 tofu plan || { echo "Tofu infra plan failed"; exit 1; }
-tofu apply -auto-approve || { echo "Tofu infra apply failed"; exit 1; }
+
+# Apply infra, ignore errors for already existing resources
+tofu apply -auto-approve -refresh=false || {
+  if grep -q "already exists" tofu.log; then
+    echo "Some resources already exist, continuing..."
+  else
+    echo "Tofu infra apply failed"; exit 1;
+  fi
+}
 
