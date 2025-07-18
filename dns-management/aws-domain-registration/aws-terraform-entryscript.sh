@@ -20,7 +20,7 @@ fi
 
 # Substitute variables in terraform.tfvars.template and output to terraform.tfvars
 BACKEND_TEMPLATE_FILE="/aws-terraform/backend.tfvars.template"
-BACKEND_OUTPUT_FILE="/aws-terraform/terraform.tfvars"
+BACKEND_OUTPUT_FILE="/aws-terraform/backend.tfvars"
 
 TEMPLATE_FILE="/aws-terraform/terraform.tfvars.template"
 OUTPUT_FILE="/aws-terraform/terraform.tfvars"
