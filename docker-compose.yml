@@ -167,7 +167,7 @@ services:
       - ./.env:/.env
     networks:
       - rapidenv
-    restart: "no"
+    restart: no
     stdin_open: true
     tty: true
     profiles: ["easydns-setup"]

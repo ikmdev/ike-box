@@ -14,7 +14,7 @@ resource "aws_route53_record" "subdomains" {
   records  = [var.target_ip]
 }
 
-resource "aws_route53_record" "subdomains" {
+resource "aws_route53_record" "dns_challenge" {
   zone_id  = data.aws_route53_zone.public.zone_id
   name     = "_acme-challenge"
   type     = "TXT"
