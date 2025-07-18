@@ -1,4 +1,4 @@
-FROM ghcr.io/opentofu/opentofu:1.10.3
+FROM scalr/opentofu:1.9.2
 # This Dockerfile is used to set up an environment for AWS DNS management.
 
 WORKDIR /aws-terraform
