@@ -1,12 +1,12 @@
 #!/bin/sh
 
 set -x
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ENV_FILE="/.env"
 
 # Source .env file if it exists
 if [ -f "$ENV_FILE" ]; then
   set -a
+  # shellcheck source=src/util.sh
   . "$ENV_FILE"
   set +a
 else
@@ -44,10 +44,13 @@ echo "Generated $BACKEND_OUTPUT_FILE from $TEMPLATE_FILE using .env variables."
 
 # Change to the terraform directory
 cd /aws-terraform || { echo "Failed to change directory to /aws-terraform"; exit 1; }
+
 # Initialize Terraform
- terraform init -backend-config=backend.tfvars || { echo "Terraform initialization failed"; exit 1; }
+terraform init -backend-config=backend.tfvars || { echo "Terraform initialization failed"; exit 1; }
+
 #  Plan Terraform configuration
 terraform plan || { echo "Terraform plan failed"; exit 1; }
+
 # Apply Terraform configuration automatically
 terraform apply -auto-approve || { echo "Terraform apply failed"; exit 1; }
 
