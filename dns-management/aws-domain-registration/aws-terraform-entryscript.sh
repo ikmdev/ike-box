@@ -46,11 +46,11 @@ echo "Generated $BACKEND_OUTPUT_FILE from $TEMPLATE_FILE using .env variables."
 cd /aws-terraform || { echo "Failed to change directory to /aws-terraform"; exit 1; }
 
 # Initialize Terraform
-terraform init -backend-config=backend.tfvars || { echo "Terraform initialization failed"; exit 1; }
+tofu init -backend-config=backend.tfvars || { echo "Terraform initialization failed"; exit 1; }
 
 #  Plan Terraform configuration
-terraform plan || { echo "Terraform plan failed"; exit 1; }
+tofu plan || { echo "Terraform plan failed"; exit 1; }
 
 # Apply Terraform configuration automatically
-terraform apply -auto-approve || { echo "Terraform apply failed"; exit 1; }
+tofu apply -auto-approve || { echo "Terraform apply failed"; exit 1; }
 

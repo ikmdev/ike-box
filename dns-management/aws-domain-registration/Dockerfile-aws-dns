@@ -1,5 +1,5 @@
-FROM opentofu/opentofu:1.6.2
-# This Dockerfile is used to set up a Terraform environment for AWS DNS management.
+FROM ghcr.io/opentofu/opentofu:1.10.3
+# This Dockerfile is used to set up an environment for AWS DNS management.
 
 WORKDIR /aws-terraform
 # Install necessary packages  envsubst (provided by the gettext package)
