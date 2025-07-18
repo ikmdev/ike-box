@@ -179,6 +179,7 @@ services:
     container_name: aws-dns-setup
     volumes:
       - ./.env:/.env
+      - ./dns-management/aws-domain-registration/backend:/aws-backend
       - ./dns-management/aws-domain-registration/infra:/aws-infra
       - ./dns-management/aws-domain-registration/aws-entryscript.sh:/aws-entryscript.sh
     networks:
