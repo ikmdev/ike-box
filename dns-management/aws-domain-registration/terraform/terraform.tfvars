@@ -1,6 +1,6 @@
 domain_name    = "${BASE_DOMAIN}"
 target_ip      = "${TARGET_IP}"
-acme_challenge = "${ACME_CHALLENGE}"
+//acme_challenge = "${ACME_CHALLENGE}"
 
 subdomains = [
   "www",
