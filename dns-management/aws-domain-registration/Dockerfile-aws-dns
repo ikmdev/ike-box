@@ -2,6 +2,11 @@ FROM hashicorp/terraform:1.12.2
 # This Dockerfile is used to set up a Terraform environment for AWS DNS management.
 
 WORKDIR /aws-terraform
+# Install necessary packages  envsubst (provided by the gettext package)
+
+RUN apk add --no-cache \
+    curl \
+    gettext
 
 # Copy Terraform configuration files
 COPY ./dns-management/aws-domain-registration/terraform /aws-terraform
