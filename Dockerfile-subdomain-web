@@ -4,4 +4,4 @@ FROM nginx:1.26.3
 RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 
 # Copy files
-COPY ./subdomain/nginx.conf /etc/nginx/nginx.conf
+COPY ./subdomain-based/nginx.conf /etc/nginx/nginx.conf
