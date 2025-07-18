@@ -239,3 +239,10 @@ docker/
 # Certbot specific
 ###################
 certbot/
+
+###################
+# Ignore generated Terraform files
+###################
+*.tfstate
+.terraform.lock.hcl
+.terraform/
