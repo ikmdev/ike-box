@@ -31,8 +31,8 @@ if ! echo "$BASE_DOMAIN" | grep -Eq '^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$'; then
 fi
 
 # Substitute variables in terraform.tfvars.template and output to terraform.tfvars
-TEMPLATE_FILE="/aws-terraform/terraform.tfvars.template"
-OUTPUT_FILE="/aws-terraform/terraform.tfvars"
+TEMPLATE_FILE="/aws-infra/terraform.tfvars.template"
+OUTPUT_FILE="/aws-infra/terraform.tfvars"
 
 if [ ! -f "$TEMPLATE_FILE" ]; then
   echo "Template file not found: $TEMPLATE_FILE"
