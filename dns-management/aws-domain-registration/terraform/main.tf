@@ -11,9 +11,9 @@ terraform {
   }
   backend "s3" {
     region         = "us-east-1"
-    bucket         = "fdashield-infrastructure-terraformstatefile"
-    key            = "ike-inbox-dnshosting.tfstate"
-    dynamodb_table = "fdashield-terraform-lock"
+    bucket         = "ikebox-infrastructure-terraformstatefile"
+    key            = "ike-box-dnshosting.tfstate"
+    dynamodb_table = "ikebox-terraform-lock"
     encrypt        = true
   }
 }
