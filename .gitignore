@@ -250,5 +250,5 @@ certbot/
 ###################
 # Ignore generated Terraform files
 
-dns-management/aws-domain-registration/terraform/backend.tfvars
-dns-management/aws-domain-registration/terraform/terraform.tfvars
+dns-management/aws-domain-registration/infra/backend.tfvars
+dns-management/aws-domain-registration/infra/terraform.tfvars

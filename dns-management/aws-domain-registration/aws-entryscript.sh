@@ -3,6 +3,18 @@
 set -x
 ENV_FILE="/.env"
 
+# Ensure required tools are installed
+REQUIRED_TOOLS="envsubst tofu"
+for tool in $REQUIRED_TOOLS; do
+  if ! command -v $tool >/dev/null 2>&1; then
+    echo "Error: $tool is not installed. Installing..."
+    sudo apt-get update && sudo apt-get install -y gettext-base terraform || {
+      echo "Failed to install $tool. Exiting."
+      exit 1
+    }
+  fi
+done
+
 # Source .env file if it exists
 if [ -f "$ENV_FILE" ]; then
   set -a
@@ -34,7 +46,7 @@ echo "Generated $OUTPUT_FILE from $TEMPLATE_FILE using .env variables."
 cat $OUTPUT_FILE
 
 # Change to the terraform directory
-cd /aws-terraform || { echo "Failed to change directory to /aws-terraform"; exit 1; }
+cd /aws-infra || { echo "Failed to change directory to /aws-infra"; exit 1; }
 
 # Initialize Terraform
 tofu init || { echo "Terraform initialization failed"; exit 1; }

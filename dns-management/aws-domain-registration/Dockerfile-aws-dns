@@ -4,16 +4,14 @@ FROM scalr/opentofu:1.9.2
 WORKDIR /aws-terraform
 # Install necessary packages  envsubst (provided by the gettext package)
 
-# RUN apk add --no-cache \
-#     curl \
-#     gettext
+RUN sudo apt-get update && sudo apt-get install -y gettext-base
 
 # Copy Terraform configuration files
 COPY ./dns-management/aws-domain-registration/terraform /aws-terraform
 
 # Copy entryscript
 COPY ./dns-management/aws-domain-registration/aws-terraform-entryscript.sh /aws-terraform-entryscript.sh
-RUN chmod +x /aws-terraform-entryscript.sh
+RUN chmod +x /aws-entryscript.sh
 
 # Set entrypoint
 ENTRYPOINT ["/aws-terraform-entryscript.sh"]
