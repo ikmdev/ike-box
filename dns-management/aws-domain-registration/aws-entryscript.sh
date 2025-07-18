@@ -49,7 +49,7 @@ cat $OUTPUT_FILE
 cd /aws-infra || { echo "Failed to change directory to /aws-infra"; exit 1; }
 
 # Initialize Terraform
-tofu init || { echo "Terraform initialization failed"; exit 1; }
+tofu init --backend-config="BASE_DOMAIN=${BASE_DOMAIN}" || { echo "Terraform initialization failed"; exit 1; }
 
 #  Plan Terraform configuration
 tofu plan || { echo "Terraform plan failed"; exit 1; }
