@@ -1,4 +1,4 @@
-FROM hashicorp/terraform:1.12.2
+FROM opentofu/opentofu:1.6.2
 # This Dockerfile is used to set up a Terraform environment for AWS DNS management.
 
 WORKDIR /aws-terraform
