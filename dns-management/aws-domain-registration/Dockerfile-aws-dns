@@ -7,12 +7,12 @@ WORKDIR /aws-terraform
 RUN sudo apt-get update && sudo apt-get install -y gettext-base
 
 # Copy Terraform configuration files
-COPY ./dns-management/aws-domain-registration/terraform /aws-terraform
+COPY ./dns-management/aws-domain-registration/terraform /aws-infra
 
 # Copy entryscript
-COPY ./dns-management/aws-domain-registration/aws-terraform-entryscript.sh /aws-terraform-entryscript.sh
+COPY ./dns-management/aws-domain-registration/aws-entryscript.sh /aws-entryscript.sh
 RUN chmod +x /aws-entryscript.sh
 
 # Set entrypoint
-ENTRYPOINT ["/aws-terraform-entryscript.sh"]
+ENTRYPOINT ["/aws-entryscript.sh"]
 
