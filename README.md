@@ -38,37 +38,48 @@ This project uses a centralized domain configuration approach. All domain names 
 
 ### Setting Up Domain Configuration
 
-1. The repository includes a default `.env` file with the following structure:
+1. The repository includes a default `.env` file.  Please fill out the values in this files to match what your 
+    expected environment and contact information will be.  To use a different domain, simply edit the `BASE_DOMAIN` 
+    value in the `.env` file. All other configurations will automatically use the updated domain.  You will **not** 
+    have a ACME_CHALLENGE at this point, so you will need to leave this blank.
+
+2. Create the original DNS entries for the domain in your DNS provider.
+
+    a. For creating DNS entries in AWS, run the provided scripts to generate configuration files from templates:
+
+        ```bash
+        docker-compose run  aws-dns-setup
+        ```
+    
+    b. For creating DNS entries in EasyDNS, run the provided scripts to generate configuration files from templates:
+
+        ```bash
+        docker-compose run easy-dns-setup
+        ```
+3. Start the cert generation process by executing the following command:
 
     ```bash
-    # Domain configuration
-    BASE_DOMAIN=ikedesigns.com
-    WWW_SUBDOMAIN=www.${BASE_DOMAIN}
-    NEXUS_SUBDOMAIN=nexus.${BASE_DOMAIN}
-    KOMET_SUBDOMAIN=komet.${BASE_DOMAIN}
-    IKMDEV_SUBDOMAIN=ikmdev.${BASE_DOMAIN}
-
-    # Combined domain lists for services
-    NGINX_DOMAINS="*.${BASE_DOMAIN}"
-    CERTBOT_DOMAINS="${BASE_DOMAIN},${WWW_SUBDOMAIN},${NEXUS_SUBDOMAIN},${KOMET_SUBDOMAIN},${IKMDEV_SUBDOMAIN}"
-
-    # Other configuration
-    NGINX_PORT=80
+    docker-compose run certbot-initialize
     ```
 
-2. To use a different domain, simply edit the `BASE_DOMAIN` value in the `.env` file. All other configurations will automatically use the updated domain.
+    This will generate the necessary certificates for your domain and subdomains. The certificates will be stored in 
+    the `./certbot/conf` directory.  At this point, there should be an acme challenge value printed on your screen.  
+    **DO NOT CLOSE THIS WINDOW OR TERMINATE THE PROCESS** as it is necessary for the next step.
+4. Edit the .env file to include the `ACME_CHALLENGE` value that was printed in the previous step. This value is necessary for the 
+   certificate generation process to complete successfully.
+5. (Likly in a new Window) Run the DNS scripts again to include the ACME_CHALLENGE value in the DNS records. This will allow the certificate generation process to complete successfully.
 
-3. For Terraform-based DNS management, run the provided scripts to generate configuration files from templates:
+    a. For AWS, run the following command:
 
-    ```bash
-    # For domain registration
-    cd dns-management/aws-domain-registration
-    ./generate-tfvars.sh
+        ```bash
+        docker-compose run aws-dns-setup
+        ```
 
-    # For subdomain records
-    cd dns-management/aws-domain-registration/subdomain-records
-    ./generate-tfvars.sh
-    ```
+    b. For EasyDNS, run the following command:
+
+        ```bash
+        docker-compose run easy-dns-setup
+        ```
 
 ## Running Locally
 
