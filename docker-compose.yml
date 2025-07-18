@@ -149,7 +149,7 @@ services:
     volumes:
       - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
-      - ./subdomain/certbot-entrypoint-initialize.sh:/certbot-entrypoint-initialize.sh:ro
+      - ./subdomain-based/certbot-entrypoint-initialize.sh:/certbot-entrypoint-initialize.sh:ro
     entrypoint: "/certbot-entrypoint-initialize.sh"
     networks:
       - rapidenv
