@@ -36,7 +36,7 @@ echo "Generated $OUTPUT_FILE from $TEMPLATE_FILE using .env variables."
 # Change to the terraform directory
 cd /aws-terraform || { echo "Failed to change directory to /aws-terraform"; exit 1; }
 # Initialize Terraform
-terraform init || { echo "Terraform initialization failed"; exit 1; }
+terraform terraform init -reconfigure || { echo "Terraform initialization failed"; exit 1; }
 #  Plan Terraform configuration
 terraform plan || { echo "Terraform plan failed"; exit 1; }
 # Apply Terraform configuration automatically
