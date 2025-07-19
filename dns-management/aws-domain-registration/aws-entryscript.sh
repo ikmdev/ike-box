@@ -57,8 +57,8 @@ import_resource() {
   IMPORT_CMD="$1"
   RESOURCE_NAME="$2"
   IMPORT_OUTPUT=$(eval "$IMPORT_CMD" 2>&1)
-  if echo "$IMPORT_OUTPUT" | grep -qi "already exists"; then
-    echo "$RESOURCE_NAME already exists, continuing..."
+  if echo "$IMPORT_OUTPUT" | grep -Eqi "already exists|already managed"; then
+    echo "$RESOURCE_NAME already exists or already managed, continuing..."
   elif echo "$IMPORT_OUTPUT" | grep -qi "Error"; then
     echo "$RESOURCE_NAME import failed: $IMPORT_OUTPUT"
     exit 1
