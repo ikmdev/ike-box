@@ -122,10 +122,20 @@ tofu init \
 # Import existing domains and A records before apply
 echo "Importing existing domains and A records..."
 
+
+# Import domain and get zone_id
 import_resource "tofu import aws_route53domains_domain.main \"${BASE_DOMAIN}\"" "Domain"
-import_resource "tofu import aws_route53_record.subdomains[\"www\"] \"${BASE_DOMAIN}_${WWW_SUBDOMAIN}_A\"" "WWW A record"
-import_resource "tofu import aws_route53_record.subdomains[\"nexus\"] \"${BASE_DOMAIN}_${NEXUS_SUBDOMAIN}_A\"" "NEXUS A record"
-import_resource "tofu import aws_route53_record.subdomains[\"komet\"] \"${BASE_DOMAIN}_${KOMET_SUBDOMAIN}_A\"" "KOMET A record"
+
+# Get the zone_id from state after domain import
+ZONE_ID=$(tofu state show aws_route53domains_domain.main | grep 'zone_id' | awk '{print $3}')
+if [ -z "$ZONE_ID" ]; then
+  echo "Failed to retrieve zone_id after domain import."
+  exit 1
+fi
+
+import_resource "tofu import aws_route53_record.subdomains[\"www\"] \"${ZONE_ID}_${WWW_SUBDOMAIN}_A\"" "WWW A record"
+import_resource "tofu import aws_route53_record.subdomains[\"nexus\"] \"${ZONE_ID}_${NEXUS_SUBDOMAIN}_A\"" "NEXUS A record"
+import_resource "tofu import aws_route53_record.subdomains[\"komet\"] \"${ZONE_ID}_${KOMET_SUBDOMAIN}_A\"" "KOMET A record"
 
 tofu plan || { echo "Tofu infra plan failed"; exit 1; }
 
