@@ -72,9 +72,12 @@ class EasyDNSClient:
         """
         url = f"{self.endpoint}/domains/add/{domain}"
         logger.info(f"Creating domain: {domain}")
-
+        payload = {
+            "domain": domain,
+            "contacts": contacts
+        }
         try:
-            response = self.session.put(url, json={})
+            response = self.session.put(url, json=payload)
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
@@ -211,16 +214,50 @@ def main():
     except ImportError:
         logger.warning("python-dotenv not installed, .env file will not be loaded.")
 
-    admin_email = os.getenv("ADMIN_EMAIL", "admin@example.com")
-    admin_phone = os.getenv("ADMIN_PHONE", "+10000000000")
-    admin_name = os.getenv("ADMIN_NAME", "Admin User")
+    # Get admin contact info from environment variables
+    admin_email = os.getenv("ADMIN_EMAIL")
+    admin_phone = os.getenv("ADMIN_PHONE")
+    admin_name = os.getenv("ADMIN_FIRST_NAME")
+    address_line_1 = os.getenv("ADMIN_ADDRESS")
+    admin_last_name = os.getenv("ADMIN_LAST_NAME")
+    admin_city = os.getenv("ADMIN_CITY")
+    admin_state = os.getenv("ADMIN_STATE")
+    admin_zip = os.getenv("ADMIN_ZIP")
 
-    address_line_1 = os.getenv("ADDRESS_LINE_1", "")
-    city = os.getenv("CITY", "")
-    last_name = os.getenv("LAST_NAME", "")
-    state = os.getenv("STATE", "")
-    zip_code = os.getenv("ZIP_CODE", "")
+    contacts = {
+        "admin": {
+            "email": admin_email,
+            "first_name": admin_first_name,
+            "last_name": admin_last_name,
+            "address": admin_address,
+            "city": admin_city,
+            "state": admin_state,
+            "zip": admin_zip,
+            "phone": admin_phone
+        },
+        "tech": {
+            "email": admin_email,
+            "first_name": admin_first_name,
+            "last_name": admin_last_name,
+            "address": admin_address,
+            "city": admin_city,
+            "state": admin_state,
+            "zip": admin_zip,
+            "phone": admin_phone
+        },
+        "registrant": {
+            "email": admin_email,
+            "first_name": admin_first_name,
+            "last_name": admin_last_name,
+            "address": admin_address,
+            "city": admin_city,
+            "state": admin_state,
+            "zip": admin_zip,
+            "phone": admin_phone
+        },
+    }
 
+    # Set admin contact info in the config
     # Load configuration
     config = load_config(args.config)
 
