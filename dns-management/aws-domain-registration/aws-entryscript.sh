@@ -70,6 +70,7 @@ elif echo "$BACKEND_OUTPUT" | grep -q "Error"; then
   exit 1
 fi
 
+
 # --- Then apply infra ---
 TEMPLATE_FILE="/aws-infra/terraform.tfvars.template"
 OUTPUT_FILE="/aws-infra/terraform.tfvars"
@@ -89,6 +90,14 @@ tofu init \
     --backend-config="key=${BASE_DOMAIN}-dnshosting.tfstate" \
     --backend-config="dynamodb_table=${BASE_DOMAIN}-terraform-lock" \
     || { echo "Tofu infra initialization failed"; exit 1; }
+
+# Import existing domains and A records before apply
+echo "Importing existing domains and A records..."
+tofu import aws_route53domains_domain.main "${BASE_DOMAIN}" || echo "Domain import skipped or failed."
+tofu import aws_route53_record.www "${WWW_SUBDOMAIN}" || echo "WWW A record import skipped or failed."
+tofu import aws_route53_record.nexus "${NEXUS_SUBDOMAIN}" || echo "NEXUS A record import skipped or failed."
+tofu import aws_route53_record.komet "${KOMET_SUBDOMAIN}" || echo "KOMET A record import skipped or failed."
+
 tofu plan || { echo "Tofu infra plan failed"; exit 1; }
 
 # Apply infra, ignore errors for already existing resources
