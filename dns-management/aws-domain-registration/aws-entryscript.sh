@@ -127,7 +127,7 @@ echo "Importing existing domains and A records..."
 import_resource "tofu import aws_route53domains_domain.main \"${BASE_DOMAIN}\"" "Domain"
 
 # Get the zone_id from state after domain import
-ZONE_ID=$(tofu state show aws_route53domains_domain.main | grep 'zone_id' | awk '{print $3}')
+ZONE_ID=$(tofu state show aws_route53domains_domain.main | grep 'zone_id' | awk '{print $3}' | tr -d '"')
 if [ -z "$ZONE_ID" ]; then
   echo "Failed to retrieve zone_id after domain import."
   exit 1
