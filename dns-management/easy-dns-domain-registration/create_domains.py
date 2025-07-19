@@ -205,7 +205,7 @@ def main():
     admin_phone = os.getenv("ADMIN_PHONE", "+10000000000")
     if not admin_phone or not admin_phone.startswith("+") or not len(admin_phone) == 13 or not admin_phone[4] == "." or not admin_phone[1:4].isdigit() or not admin_phone[5:].isdigit():
         import re
-        if not re.match(r"^\+[0-9]{3}\.[0-9]{8}$", admin_phone):
+        if not re.match(r"^\+[0-9]{1,3}\.[0-9]{8}$", admin_phone):
             logger.error("ADMIN_PHONE must be in the format +999.12345678")
             sys.exit(1)
     """Main function to create domains and subdomains."""
