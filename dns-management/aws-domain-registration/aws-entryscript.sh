@@ -123,9 +123,9 @@ tofu init \
 echo "Importing existing domains and A records..."
 
 import_resource "tofu import aws_route53domains_domain.main \"${BASE_DOMAIN}\"" "Domain"
-import_resource "tofu import aws_route53_record.subdomains[\"www\"] \"${BASE_DOMAIN}_${WWW_SUBDOMAIN}_A\"" "WWW A record"
-import_resource "tofu import aws_route53_record.subdomains[\"nexus\"] \"${BASE_DOMAIN}_${NEXUS_SUBDOMAIN}_A\"" "NEXUS A record"
-import_resource "tofu import aws_route53_record.subdomains[\"komet\"] \"${BASE_DOMAIN}_${KOMET_SUBDOMAIN}_A\"" "KOMET A record"
+import_resource "tofu import aws_route53_record.subdomains[\"www\"] \"${WWW_SUBDOMAIN}\"" "WWW A record"
+import_resource "tofu import aws_route53_record.subdomains[\"nexus\"] \"${NEXUS_SUBDOMAIN}\"" "NEXUS A record"
+import_resource "tofu import aws_route53_record.subdomains[\"komet\"] \"${KOMET_SUBDOMAIN}\"" "KOMET A record"
 
 tofu plan || { echo "Tofu infra plan failed"; exit 1; }
 
