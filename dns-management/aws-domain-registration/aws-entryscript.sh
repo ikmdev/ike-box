@@ -45,6 +45,28 @@ if ! echo "$ADMIN_ZIP" | grep -Eq '^[A-Za-z0-9 \-]+$'; then
   exit 1
 fi
 
+import_resource() {
+  # Runs a tofu import command for a given resource and handles errors.
+  # Arguments:
+  #   $1 - The tofu import command to execute (as a string)
+  #   $2 - A human-readable name for the resource being imported
+  # Behavior:
+  #   - If the resource already exists, continues execution.
+  #   - If the import fails for any other reason, exits the script.
+  #   - If the import succeeds, continues execution.
+  IMPORT_CMD="$1"
+  RESOURCE_NAME="$2"
+  IMPORT_OUTPUT=$(eval "$IMPORT_CMD" 2>&1)
+  if echo "$IMPORT_OUTPUT" | grep -qi "already exists"; then
+    echo "$RESOURCE_NAME already exists, continuing..."
+  elif echo "$IMPORT_OUTPUT" | grep -qi "Error"; then
+    echo "$RESOURCE_NAME import failed: $IMPORT_OUTPUT"
+    exit 1
+  else
+    echo "$RESOURCE_NAME import succeeded."
+  fi
+}
+
 
 # --- Apply backend first ---
 BACKEND_TEMPLATE="/aws-backend/terraform.tfvars.template"
@@ -58,14 +80,19 @@ envsubst < "$BACKEND_TEMPLATE" > "$BACKEND_VARS"
 echo "Generated $BACKEND_VARS from $BACKEND_TEMPLATE using .env variables."
 cat $BACKEND_VARS
 
+
 cd /aws-backend || { echo "Failed to change directory to /aws-backend"; exit 1; }
 tofu init || { echo "Tofu backend init failed"; exit 1; }
 
-# Apply backend, ignore errors for already existing resources
+# Import backend resources before apply
+import_resource "tofu import aws_s3_bucket.tfstate \"tfstate-${BASE_DOMAIN}\"" "S3 Bucket"
+import_resource "tofu import aws_dynamodb_table.tfstate_lock \"${BASE_DOMAIN}-terraform-lock\"" "DynamoDB Table"
+
+# Apply backend, fail on any error except 'already exists'
 BACKEND_OUTPUT=$(tofu apply -auto-approve -refresh=false 2>&1)
-if echo "$BACKEND_OUTPUT" | grep -q "already exists"; then
-  echo "Some resources already exist, continuing..."
-elif echo "$BACKEND_OUTPUT" | grep -q "Error"; then
+if echo "$BACKEND_OUTPUT" | grep -qi "already exists"; then
+  echo "Some backend resources already exist, continuing..."
+elif echo "$BACKEND_OUTPUT" | grep -qi "Error"; then
   echo "Tofu backend apply failed"
   exit 1
 fi
@@ -91,12 +118,14 @@ tofu init \
     --backend-config="dynamodb_table=${BASE_DOMAIN}-terraform-lock" \
     || { echo "Tofu infra initialization failed"; exit 1; }
 
+
 # Import existing domains and A records before apply
 echo "Importing existing domains and A records..."
-tofu import aws_route53domains_domain.main "${BASE_DOMAIN}" || echo "Domain import skipped or failed."
-tofu import aws_route53_record.subdomains["www") "${WWW_SUBDOMAIN}" || echo "WWW A record import skipped or failed."
-tofu import aws_route53_record.subdomains["nexus") "${NEXUS_SUBDOMAIN}" || echo "NEXUS A record import skipped or failed."
-tofu import aws_route53_record..subdomains["komet") "${KOMET_SUBDOMAIN}" || echo "KOMET A record import skipped or failed."
+
+import_resource "tofu import aws_route53domains_domain.main \"${BASE_DOMAIN}\"" "Domain"
+import_resource "tofu import aws_route53_record.subdomains[\"www\"] \"${WWW_SUBDOMAIN}\"" "WWW A record"
+import_resource "tofu import aws_route53_record.subdomains[\"nexus\"] \"${NEXUS_SUBDOMAIN}\"" "NEXUS A record"
+import_resource "tofu import aws_route53_record.subdomains[\"komet\"] \"${KOMET_SUBDOMAIN}\"" "KOMET A record"
 
 tofu plan || { echo "Tofu infra plan failed"; exit 1; }
 
