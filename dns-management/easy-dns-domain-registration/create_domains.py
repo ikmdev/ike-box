@@ -195,6 +195,19 @@ def parse_domains_file(domains_file: str) -> List[Dict[str, Any]]:
     return domains
 
 def main():
+    # Universal zip code format validation
+    admin_zip = os.getenv("ADMIN_ZIP", "")
+    import re
+    if not re.match(r'^[A-Za-z0-9 \-]+$', admin_zip):
+        logger.error("ADMIN_ZIP must be a valid postal code (letters, numbers, spaces, dashes only)")
+        sys.exit(1)
+    # Validate ADMIN_PHONE format
+    admin_phone = os.getenv("ADMIN_PHONE", "+10000000000")
+    if not admin_phone or not admin_phone.startswith("+") or not len(admin_phone) == 13 or not admin_phone[4] == "." or not admin_phone[1:4].isdigit() or not admin_phone[5:].isdigit():
+        import re
+        if not re.match(r"^\+[0-9]{3}\.[0-9]{8}$", admin_phone):
+            logger.error("ADMIN_PHONE must be in the format +999.12345678")
+            sys.exit(1)
     """Main function to create domains and subdomains."""
     parser = argparse.ArgumentParser(description="Create domains and subdomains in easyDNS")
     parser.add_argument("--config", default="config.json", help="Path to the configuration file")

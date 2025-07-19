@@ -25,8 +25,23 @@ else
   echo ".env file not found at $ENV_FILE"
 fi
 
+
+# Validate BASE_DOMAIN
 if ! echo "$BASE_DOMAIN" | grep -Eq '^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$'; then
   echo "Error: BASE_DOMAIN must be a valid domain (e.g., example.com, example.org, sub.example.co.uk)"
+  exit 1
+fi
+
+
+# Validate ADMIN_PHONE format
+if ! echo "$ADMIN_PHONE" | grep -Eq '^\+[0-9]{3}\.[0-9]{8}$'; then
+  echo "Error: ADMIN_PHONE must be in the format +999.12345678"
+  exit 1
+fi
+
+# Universal zip code format validation
+if ! echo "$ADMIN_ZIP" | grep -Eq '^[A-Za-z0-9 \-]+$'; then
+  echo "Error: ADMIN_ZIP must be a valid postal code (letters, numbers, spaces, dashes only)"
   exit 1
 fi
 

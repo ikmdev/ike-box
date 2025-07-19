@@ -1,3 +1,8 @@
+variable "acme_challenge" {
+  description = "ACME challenge value for domain verification"
+  type        = string
+  default     = ""
+}
 
 variable "aws_region" {
   description = "AWS region"
