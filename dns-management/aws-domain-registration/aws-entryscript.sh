@@ -34,7 +34,7 @@ fi
 
 
 # Validate ADMIN_PHONE format
-if ! echo "$ADMIN_PHONE" | grep -Eq '^\+[0-9]{1,3}\.[0-9]{8}$'; then
+if ! echo "$ADMIN_PHONE" | grep -Eq '^\+[0-9]{1,3}\.[0-9]{1,14}$'; then
   echo "Error: ADMIN_PHONE must be in the format +999.12345678"
   exit 1
 fi
