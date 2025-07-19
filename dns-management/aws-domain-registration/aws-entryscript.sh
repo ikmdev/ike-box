@@ -56,7 +56,7 @@ import_resource() {
   #   - If the import succeeds, continues execution.
   IMPORT_CMD="$1"
   RESOURCE_NAME="$2"
-  IMPORT_OUTPUT=$(eval "echo \"$IMPORT_CMD\"" 2>&1)
+  IMPORT_OUTPUT=$(eval "$IMPORT_CMD" 2>&1)
   echo "Import Output: $IMPORT_OUTPUT"
   if echo "$IMPORT_OUTPUT" | grep -Eqi "already exists|already managed"; then
     echo "$RESOURCE_NAME already exists or already managed, continuing..."
