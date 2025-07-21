@@ -135,7 +135,7 @@ if [ -z "$ZONE_ID" ]; then
 fi
 
 # Import WWW A record directly
-WWW_IMPORT_OUTPUT=$(tofu import aws_route53_record.subdomains["www"] "${ZONE_ID}_${WWW_SUBDOMAIN}_A" 2>&1)
+WWW_IMPORT_OUTPUT=$(tofu import aws_route53_record.subdomains[\"www\"] "${ZONE_ID}_${WWW_SUBDOMAIN}_A" 2>&1)
 echo "Import Output: $WWW_IMPORT_OUTPUT"
 if echo "$WWW_IMPORT_OUTPUT" | grep -Eqi "already exists|already managed"; then
   echo "WWW A record already exists or already managed, continuing..."
