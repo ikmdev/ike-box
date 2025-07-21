@@ -134,10 +134,41 @@ if [ -z "$ZONE_ID" ]; then
   exit 1
 fi
 
-# Import subdomain A records using import_resource function
-import_resource "tofu import aws_route53_record.subdomains[\"\"\"www\"\"\"] \"${ZONE_ID}_${WWW_SUBDOMAIN}_A\"" "WWW A record"
-import_resource "tofu import aws_route53_record.subdomains[\"\"nexus\"\"] \"${ZONE_ID}_${NEXUS_SUBDOMAIN}_A\"" "NEXUS A record"
-import_resource "tofu import aws_route53_record.subdomains[\"\"komet\"\"] \"${ZONE_ID}_${KOMET_SUBDOMAIN}_A\"" "KOMET A record"
+# Import WWW A record directly
+WWW_IMPORT_OUTPUT=$(tofu import aws_route53_record.subdomains[\"www\"] "${ZONE_ID}_${WWW_SUBDOMAIN}_A" 2>&1)
+echo "Import Output: $WWW_IMPORT_OUTPUT"
+if echo "$WWW_IMPORT_OUTPUT" | grep -Eqi "already exists|already managed"; then
+  echo "WWW A record already exists or already managed, continuing..."
+elif echo "$WWW_IMPORT_OUTPUT" | grep -qi "Error"; then
+  echo "WWW A record import failed: $WWW_IMPORT_OUTPUT"
+  exit 1
+else
+  echo "WWW A record import succeeded."
+fi
+
+# Import NEXUS A record directly
+NEXUS_IMPORT_OUTPUT=$(tofu import aws_route53_record.subdomains[\"nexus\"] "${ZONE_ID}_${NEXUS_SUBDOMAIN}_A" 2>&1)
+echo "Import Output: $NEXUS_IMPORT_OUTPUT"
+if echo "$NEXUS_IMPORT_OUTPUT" | grep -Eqi "already exists|already managed"; then
+  echo "NEXUS A record already exists or already managed, continuing..."
+elif echo "$NEXUS_IMPORT_OUTPUT" | grep -qi "Error"; then
+  echo "NEXUS A record import failed: $NEXUS_IMPORT_OUTPUT"
+  exit 1
+else
+  echo "NEXUS A record import succeeded."
+fi
+
+# Import KOMET A record directly
+KOMET_IMPORT_OUTPUT=$(tofu import aws_route53_record.subdomains[\"komet\"] "${ZONE_ID}_${KOMET_SUBDOMAIN}_A" 2>&1)
+echo "Import Output: $KOMET_IMPORT_OUTPUT"
+if echo "$KOMET_IMPORT_OUTPUT" | grep -Eqi "already exists|already managed"; then
+  echo "KOMET A record already exists or already managed, continuing..."
+elif echo "$KOMET_IMPORT_OUTPUT" | grep -qi "Error"; then
+  echo "KOMET A record import failed: $KOMET_IMPORT_OUTPUT"
+  exit 1
+else
+  echo "KOMET A record import succeeded."
+fi
 
 tofu plan || { echo "Tofu infra plan failed"; exit 1; }
 
