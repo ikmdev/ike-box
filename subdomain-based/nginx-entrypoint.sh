@@ -11,6 +11,10 @@ if [ -f "/.env" ]; then
   export NEXUS_SUBDOMAIN="nexus.${BASE_DOMAIN}"
   export KOMET_SUBDOMAIN="komet.${BASE_DOMAIN}"
 fi
+echo "BASE_DOMAIN=$BASE_DOMAIN"
+echo "WWW_SUBDOMAIN=$WWW_SUBDOMAIN"
+echo "NEXUS_SUBDOMAIN=$NEXUS_SUBDOMAIN"
+echo "KOMET_SUBDOMAIN=$KOMET_SUBDOMAIN"
 
 # Replace environment variables in the Nginx configuration templates
 envsubst '${BASE_DOMAIN} ${WWW_SUBDOMAIN} ${NEXUS_SUBDOMAIN} ${KOMET_SUBDOMAIN}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
