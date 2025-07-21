@@ -135,7 +135,7 @@ services:
       - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
       - ./subdomain-based/certbot-entrypoint.sh:/certbot-entrypoint.sh:ro
-    entrypoint: "/certbot-nginx-entrypoint.sh"
+    entrypoint: "/certbot-entrypoint.sh"
     networks:
       - rapidenv
     restart: unless-stopped
