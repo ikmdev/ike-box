@@ -19,5 +19,5 @@ resource "aws_route53_record" "acme_challenge" {
   name     = "_acme-challenge"
   type     = "TXT"
   ttl      = 300
-  records  = [var.dns_challenge_value]
+  records  = [var.acme_challenge]
 }
