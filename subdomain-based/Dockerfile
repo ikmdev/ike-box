@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y openssl gettext-base && rm -rf /var/lib
 
 # Copy files
 COPY nginx.conf.template /etc/nginx/nginx.conf.template
-COPY nginx-entrypoint.sh /docker-entrypoint.sh
+COPY subdomain-based/nginx-entrypoint.sh /docker-entrypoint.sh
 
 # Make entrypoint script executable
 RUN chmod +x /docker-nginx-entrypoint.sh
