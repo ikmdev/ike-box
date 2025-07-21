@@ -8,7 +8,7 @@ COPY subdomain-based/nginx.conf.template /etc/nginx/nginx.conf.template
 COPY subdomain-based/nginx-entrypoint.sh /docker-entrypoint.sh
 
 # Make entrypoint script executable
-RUN chmod +x /docker-nginx-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
 # Set entrypoint
 ENTRYPOINT ["/docker-entrypoint.sh"]
