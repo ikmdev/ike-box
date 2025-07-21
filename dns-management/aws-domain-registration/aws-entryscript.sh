@@ -135,9 +135,9 @@ if [ -z "$ZONE_ID" ]; then
 fi
 
 # Import subdomain A records using import_resource function
-import_resource "tofu import aws_route53_record.subdomains[\"www\"] \"${ZONE_ID}_${WWW_SUBDOMAIN}_A\"" "WWW A record"
-import_resource "tofu import aws_route53_record.subdomains[\"nexus\"] \"${ZONE_ID}_${NEXUS_SUBDOMAIN}_A\"" "NEXUS A record"
-import_resource "tofu import aws_route53_record.subdomains[\"komet\"] \"${ZONE_ID}_${KOMET_SUBDOMAIN}_A\"" "KOMET A record"
+import_resource "tofu import aws_route53_record.subdomains[\"\"www\"\"] \"${ZONE_ID}_${WWW_SUBDOMAIN}_A\"" "WWW A record"
+import_resource "tofu import aws_route53_record.subdomains[\"\"nexus\"\"] \"${ZONE_ID}_${NEXUS_SUBDOMAIN}_A\"" "NEXUS A record"
+import_resource "tofu import aws_route53_record.subdomains[\"\"komet\"\"] \"${ZONE_ID}_${KOMET_SUBDOMAIN}_A\"" "KOMET A record"
 
 tofu plan || { echo "Tofu infra plan failed"; exit 1; }
 
