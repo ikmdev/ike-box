@@ -7,10 +7,8 @@ This will include the following:
 
 * sonatype nexus - a repository manager for maven artifacts
 * posgresql database - a database for nexus
-* ike website - a static website that is built from the ikmdev repo at 
-* [ikmdev/ikmdev-site](https://github.com/ikmdev/ikmdev-site)
-* komet - a web application for managing knowledge artifacts, which can be found at 
-[ikmdev/komet](https://github.com/ikmdev/komet)
+* ike website - a static website that is built from the ikmdev repo at [ikmdev/ikmdev-site](https://github.com/ikmdev/ikmdev-site)
+* komet - a web application for managing knowledge artifacts, which can be found at [ikmdev/komet](https://github.com/ikmdev/komet)
 
 ## Disclaimer
 
@@ -208,24 +206,25 @@ Follow the steps below to build and run static website on your local machine:
 
 2. Change local directory to cloned repo location
 
-3. Enter the following command to execute startup all of the applications:
+3. Enter the following command to execute startup path-based profile:
 
     ```bash
-    docker-compose up -d 
+    docker-compose --profile path-based up -d
     ```
 
 4. To view the applications directly open your web browser and navigate to: 
 * Komet: http://localhost:8080
 * Nexus: http://localhost:8081
 
+
 * ```bash
-    docker-compose up -d 
+    docker-compose --profile path-based up -d
     ```
 
 5. To shut down the applications, run the following command:
 
     ```bash
-    docker-compose down
+    docker-compose --profile path-based down
     ```
 
 The application should now be running in the Docker container using Nginx as Reverse Proxy with the path based routing can be access as:
@@ -238,7 +237,7 @@ docker-compose file is configurable to allow for other ports.  This can be run i
 for whatever port you would like to assign:
 
 ```bash
-NGINX_PORT=8080 docker compose up -d
+NGINX_PORT=8080 docker-compose --profile path-based up -d
 ```
 
 ## Application access credentials
