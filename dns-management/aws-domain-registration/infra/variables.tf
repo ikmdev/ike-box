@@ -40,8 +40,6 @@ variable "contact_info" {
     zip_code       = string
   })
 }
-variable "dns_challenge_value"{
-  description = "DNS challenge value for domain verification"
-  type        = string
-  default     = ""
+variable "acme_challenge_values" {
+  type = list(string)
 }
