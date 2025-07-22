@@ -215,6 +215,7 @@ Follow the steps below to build and run static website on your local machine:
 4. To view the applications directly open your web browser and navigate to: 
 * Komet: http://localhost:8080
 * Nexus: http://localhost:8081
+* Website: http://localhost/ikmdev-site/
 
 
 * ```bash
@@ -227,13 +228,14 @@ Follow the steps below to build and run static website on your local machine:
     docker-compose --profile path-based down
     ```
 
-The application should now be running in the Docker container using Nginx as Reverse Proxy with the path based routing can be access as:
-
-[localhost/nexus](http://localhost/nexus) and [localhost/komet](http://localhost/komet) in your web browser. If running on a remote server, replace localhost with
+The application should now be running in the Docker container using Nginx as Reverse Proxy with the path based routing can be access in your web browser. If running on a remote server, replace localhost with
 the server’s IP address.
 
-Note: On the off chance that you have issues with running on the specific port on your computer, the
-docker-compose file is configurable to allow for other ports.  This can be run in the following way, substituting 8080
+* ikmdev-site: [localhost/ikmdev-site](http://localhost/ikmdev-site/) 
+* Nexus: [localhost/nexus](http://localhost/nexus) 
+* Komet: [localhost/komet](http://localhost/komet) 
+
+Note: On the off chance that you have issues with running on the specific port on your computer, the docker-compose file is configurable to allow for other ports.  This can be run in the following way, substituting 8080
 for whatever port you would like to assign:
 
 ```bash
