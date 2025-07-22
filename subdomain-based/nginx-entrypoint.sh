@@ -1,25 +1,20 @@
-#!/bin/bash
-set -e
+#!/bin/sh
+set -ex
 
-# Load and expand .env variables if present
-if [ -f "/.env" ]; then
+ENV_FILE="/.env"
+
+# Source .env file if it exists
+if [ -f "$ENV_FILE" ]; then
   set -a
-  . "/.env"
+  # shellcheck source=src/util.sh
+  . "$ENV_FILE"
   set +a
-  # Re-export with expansion
-  export WWW_SUBDOMAIN="www.${BASE_DOMAIN}"
-  export NEXUS_SUBDOMAIN="nexus.${BASE_DOMAIN}"
-  export KOMET_SUBDOMAIN="komet.${BASE_DOMAIN}"
+else
+  echo ".env file not found at $ENV_FILE"
 fi
-echo "BASE_DOMAIN=$BASE_DOMAIN"
-echo "WWW_SUBDOMAIN=$WWW_SUBDOMAIN"
-echo "NEXUS_SUBDOMAIN=$NEXUS_SUBDOMAIN"
-echo "KOMET_SUBDOMAIN=$KOMET_SUBDOMAIN"
 
 # Replace environment variables in the Nginx configuration templates
 envsubst '${BASE_DOMAIN} ${WWW_SUBDOMAIN} ${NEXUS_SUBDOMAIN} ${KOMET_SUBDOMAIN}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
 
 # Start Nginx
 exec nginx -g 'daemon off;'
-
-
