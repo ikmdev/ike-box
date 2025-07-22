@@ -36,8 +36,8 @@ http {
         listen 443 ssl;
         server_name ${WWW_SUBDOMAIN};
 
-        ssl_certificate     /etc/letsencrypt/live/${WWW_SUBDOMAIN}/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/${WWW_SUBDOMAIN}/privkey.pem;
+        ssl_certificate     /etc/letsencrypt/live/${BASE_DOMAIN}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/${BASE_DOMAIN}/privkey.pem;
 
         error_page 497 https://$host$request_uri;
 
@@ -64,8 +64,8 @@ http {
         listen 443 ssl;
         server_name ${NEXUS_SUBDOMAIN};
 
-        ssl_certificate     /etc/letsencrypt/live/${NEXUS_SUBDOMAIN}/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/${NEXUS_SUBDOMAIN}/privkey.pem;
+        ssl_certificate     /etc/letsencrypt/live/${BASE_DOMAIN}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/${BASE_DOMAIN}/privkey.pem;
 
         error_page 497 https://$host$request_uri;
 
@@ -92,8 +92,8 @@ http {
         listen 443 ssl;
         server_name ${KOMET_SUBDOMAIN};
 
-        ssl_certificate     /etc/letsencrypt/live/${KOMET_SUBDOMAIN}/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/${KOMET_SUBDOMAIN}/privkey.pem;
+        ssl_certificate     /etc/letsencrypt/live/${BASE_DOMAIN}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/${BASE_DOMAIN}/privkey.pem;
 
         error_page 497 https://$host$request_uri;
 
