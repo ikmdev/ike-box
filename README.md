@@ -22,7 +22,7 @@ intended to contain hardened images.
 * Install [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/)
   (or something compatible, such as on your local machine.
 
-  ## Running on a Server
+## Running on a Server
 
 These are steps for running in Amazon linux by deploying a subdomain-based routing solution routing using Nginx as reverse proxy on AWS and EasyDNS to procure and set up a domain name and all of it’s necessary records for hosting IKE in a Box
 
@@ -89,7 +89,7 @@ This project uses a centralized domain configuration approach. All domain names 
 
 1. The repository includes a default `.env` file.  Please fill out the values in this files to match what your 
     expected environment and contact information will be.  To use a different domain, simply edit the `BASE_DOMAIN` 
-    value in the `.env` file. All other configurations will automatically use the updated domain.  You will **not** 
+    value in the `.env` file. All other configurations will automatically use the updated domain.  You will **note** 
     have a ACME_CHALLENGE at this point, so you will need to leave this blank.
 
 2. Create the original DNS entries for the domain in your DNS provider.
@@ -212,15 +212,8 @@ Follow the steps below to build and run static website on your local machine:
     docker-compose --profile path-based up -d
     ```
 
-4. To view the applications directly open your web browser and navigate to: 
-* Komet: http://localhost:8080
-* Nexus: http://localhost:8081
-* Website: http://localhost/ikmdev-site/
+4. To view the applications directly open your web browser and navigate to: http://localhost we should be able to view landing page and naviagte to respective pages.
 
-
-* ```bash
-    docker-compose --profile path-based up -d
-    ```
 
 5. To shut down the applications, run the following command:
 
@@ -228,13 +221,8 @@ Follow the steps below to build and run static website on your local machine:
     docker-compose --profile path-based down
     ```
 
-The application should now be running in the Docker container using Nginx as Reverse Proxy with the path based routing can be access in your web browser. If running on a remote server, replace localhost with
-the server’s IP address.
-
-* ikmdev-site: [localhost/ikmdev-site](http://localhost/ikmdev-site/) 
-* Nexus: [localhost/nexus](http://localhost/nexus) 
-* Komet: [localhost/komet](http://localhost/komet) 
-
+The application should now be running in the Docker container using Nginx as Reverse Proxy with the path based routing can be access in your web browser.
+ 
 Note: On the off chance that you have issues with running on the specific port on your computer, the docker-compose file is configurable to allow for other ports.  This can be run in the following way, substituting 8080
 for whatever port you would like to assign:
 
@@ -245,6 +233,37 @@ NGINX_PORT=8080 docker-compose --profile path-based up -d
 ## Application access credentials
 komet - a web application requires login credentials which is defined in users.ini file located at ./komet-data/users.ini
 
+## Accessing JPRO Journal View for Komet
+ To access the JPRO journal view for Komet, download the required dataset from Nexus, and placed in Solor folder in your local machine home directory. If you're running the app from IKE-box in a server transfer the dataset to the server using the scp command.
+
+1. Download the dataset to your local machine (e.g., to ~/Solor/).with required credentials
+
+2. Transfer Dataset to Server Using SCP
+
+Ensure you have the SSH private key (e.g., docker-deployment-key.pem) with the correct permissions
+
+```bash
+ 400 ~/.ssh/docker-deployment-key.pem
+```
+Use SCP to Transfer the Dataset:
+
+Run the following command from your local machine:
+```bash
+scp -i ~/.ssh/docker-deployment-key.pem -r ~/Solor/ ec2-user@<server-ip>:/home/ec2-user/ike-box/komet-data
+```
+
+3. Verify the Transfer:
+
+Check that the dataset is present in 
+
+```bash
+cd /home/ec2-user/ike-box/komet-data
+```
+
+4. Load Dataset in Komet/JPRO
+
+Restart Komet if necessary to pick up the new data.
+Access the journal view again to verify the dataset is available.
 
 ## Issues and Contributions
 
