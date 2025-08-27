@@ -25,10 +25,10 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "tfstate_sse" {
   }
 }
 
-resource "aws_s3_bucket_acl" "bucket_acl" {
-  bucket = aws_s3_bucket.tfstate.id
-  acl    = "private"
-}
+# resource "aws_s3_bucket_acl" "bucket_acl" {
+#   bucket = aws_s3_bucket.tfstate.id
+#   acl    = "private"
+# }
 
 resource "aws_s3_bucket_versioning" "tfstate_versioning" {
   bucket = aws_s3_bucket.tfstate.id
