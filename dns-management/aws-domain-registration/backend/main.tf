@@ -13,16 +13,22 @@ provider "aws" {
 
 resource "aws_s3_bucket" "tfstate" {
   bucket = var.s3_bucket_name
-  acl    = "private"
+}
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
+resource "aws_s3_bucket_server_side_encryption_configuration" "tfstate_sse" {
+  bucket = aws_s3_bucket.tfstate.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
     }
   }
 }
+
+# resource "aws_s3_bucket_acl" "bucket_acl" {
+#   bucket = aws_s3_bucket.tfstate.id
+#   acl    = "private"
+# }
 
 resource "aws_s3_bucket_versioning" "tfstate_versioning" {
   bucket = aws_s3_bucket.tfstate.id
