@@ -1,7 +1,7 @@
 variable "acme_challenge" {
   description = "ACME challenge value for domain verification"
-  type        = string
-  default     = ""
+  type        = list(string)
+  default     = [""]
 }
 
 variable "aws_region" {
