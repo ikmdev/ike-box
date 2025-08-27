@@ -44,5 +44,5 @@ variable "contact_info" {
 variable "dns_challenge_value"{
   description = "DNS challenge value for domain verification"
   type        = list(string)
-  default     = ""
+  default     = [""]
 }
