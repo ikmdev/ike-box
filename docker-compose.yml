@@ -1,6 +1,6 @@
 services:
   nexus:
-    image: sonatype/nexus3
+    image: sonatype/nexus3:3.68.0
     container_name: nexus
     volumes:
       - nexus-data:/nexus-data
