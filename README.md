@@ -71,6 +71,10 @@ docker-compose --version
 ```
 ## Deploy Application Services
 
+### Install Git on your server
+```bash
+sudo dnf install git
+```
 Clone ike-in-box repository
 ```bash
 git clone https://github.com/ikmdev/ike-box.git
@@ -138,6 +142,11 @@ Note:
 * Only the nginx-subdomain service is activated when you use the --profile subdomain flag
 * You may want to remove the container_name: nginx line or make the names unique if you ever run both at once.
 * No conflicting port mappings. (Only one Nginx service should run at a time on the same port.)
+* Make sure your entrypoint script executable inside the subdomain-based directory
+    ```bash
+  RUN chmod +x /<name-of-script.sh>
+    ```
+
 
 ### Build and Start Services:
 ```bash
