@@ -1,6 +1,6 @@
 services:
   nexus:
-    image: sonatype/nexus3:3.83.1
+    image: sonatype/nexus3:3.82.1-alpine
     container_name: nexus
     volumes:
       - nexus-data:/nexus-data
