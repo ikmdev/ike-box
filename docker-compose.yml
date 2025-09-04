@@ -3,7 +3,7 @@ services:
     image: sonatype/nexus3
     container_name: nexus
     volumes:
-      - ./nexus-data:/nexus-data
+      - nexus-data:/nexus-data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8081/"]
       interval: 30s
@@ -159,7 +159,7 @@ services:
   easy-dns-setup:
     build:
       context: ./
-      dockerfile: dns-management/aws-domain-registration/Dockerfile-aws-dns
+      dockerfile: dns-management/easy-dns-domain-registration/Dockerfile-easydns
     container_name: easy-dns-setup
     volumes:
       - ./.env:/.env
