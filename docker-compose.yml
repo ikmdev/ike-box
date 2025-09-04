@@ -3,7 +3,7 @@ services:
     image: sonatype/nexus3
     container_name: nexus
     volumes:
-      - nexus-data:/nexus-data
+      - ./nexus-data:/nexus-data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8081/"]
       interval: 30s
