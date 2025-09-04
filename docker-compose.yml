@@ -125,7 +125,7 @@ services:
     profiles: ["subdomain"]
 
   certbot:
-    image: certbot/certbot
+    image: certbot/certbot:arm64v8-latest
     container_name: certbot
     environment:
       - BASE_DOMAIN=${BASE_DOMAIN}
