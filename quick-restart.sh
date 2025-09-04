@@ -1,5 +1,6 @@
  #!/bin/bash
  echo "Listing Docker Containers"
+ echo "$0"
  echo ""
  sudo docker ps
  echo ""
