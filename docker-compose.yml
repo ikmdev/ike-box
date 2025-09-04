@@ -40,7 +40,7 @@ services:
     profiles: ["path-based", "subdomain"]
 
   ikmdev-site:
-    image: ikebox/ikmdev-site:1.0.0
+    image: ikebox/ikmdev-site:Arm64-Test
     container_name: ikmdev-site
     volumes:
       - ikmdev-data:/data
