@@ -2,9 +2,9 @@
 # Format: domain name followed by indented subdomains.  You can have multiple domains in this file, be leaving them
 # separated by a blank line.
 
-example.com
-    www
-    gitea
+tinkar.org
+    nexus
+    komet
     nexus
 
 another-example.org
