@@ -5,9 +5,4 @@
 tinkar.org
     nexus
     komet
-
-another-example.org
-    api
-    www
-    admin
-    dashboard
+    
