@@ -3,6 +3,7 @@
 # separated by a blank line.
 
 tinkar.org
+    www
     nexus
     komet
     
