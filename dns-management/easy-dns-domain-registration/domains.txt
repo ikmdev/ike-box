@@ -5,7 +5,6 @@
 tinkar.org
     nexus
     komet
-    nexus
 
 another-example.org
     api
