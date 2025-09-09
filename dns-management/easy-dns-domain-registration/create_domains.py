@@ -54,7 +54,7 @@ class EasyDNSClient:
         self.api_secret = api_secret
         self.endpoint = endpoint
         self.session = requests.Session()
-        self.session.auth = (api_key, api_secret)
+        self.session.auth = (api_secret, api_key)
         self.session.headers.update({
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -104,22 +104,23 @@ class EasyDNSClient:
         Returns:
             The API response as a dictionary
         """
-        url = f"{self.endpoint}/domains/{domain}/records"
+        url = f"{self.endpoint}/domains/zones/records/add/{domain}/{record_type}"
         full_name = f"{subdomain}.{domain}" if subdomain else domain
 
         data = {
             "domain": domain,
-            "name": subdomain,
+            "host": subdomain,
             "type": record_type,
             "ttl": ttl,
             "prio": 0,
-            "content": content
+            "rdata": content,
+            "geozone_id": 0
         }
 
         logger.info(f"Creating subdomain: {full_name}")
         
         try:
-            response = self.session.post(url, json=data)
+            response = self.session.put(url, json=data)
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
@@ -230,8 +231,8 @@ def main():
     # Get admin contact info from environment variables
     admin_email = os.getenv("ADMIN_EMAIL")
     admin_phone = os.getenv("ADMIN_PHONE")
-    admin_name = os.getenv("ADMIN_FIRST_NAME")
-    address_line_1 = os.getenv("ADMIN_ADDRESS")
+    admin_first_name = os.getenv("ADMIN_FIRST_NAME")
+    admin_address = os.getenv("ADMIN_ADDRESS")
     admin_last_name = os.getenv("ADMIN_LAST_NAME")
     admin_city = os.getenv("ADMIN_CITY")
     admin_state = os.getenv("ADMIN_STATE")
