@@ -237,6 +237,7 @@ def main():
     admin_city = os.getenv("ADMIN_CITY")
     admin_state = os.getenv("ADMIN_STATE")
     admin_zip = os.getenv("ADMIN_ZIP")
+    admin_target_ip = os.getenv("TARGET_IP")
 
     contacts = {
         "admin": {
@@ -304,7 +305,7 @@ def main():
             if args.subdomains and subdomain not in args.subdomains:
                 continue
 
-            result = client.create_subdomain(domain_name, subdomain)
+            result = client.create_subdomain(domain_name, subdomain, content=admin_target_ip)
             if "error" in result and "info" not in result:
                 logger.warning(f"Could not create subdomain {subdomain}.{domain_name}, there was an error")
 
