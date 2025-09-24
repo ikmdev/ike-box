@@ -1,0 +1,64 @@
+  
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+  
+   <!-- <offline>true</offline> -->
+   
+     
+<localRepository>${user.home}/.m2/repository</localRepository>
+
+  <servers>
+      <server>
+         <id>nexus</id>
+         <username></username>
+         <password></password>
+      </server>
+   </servers>
+
+
+        
+   <mirrors>
+      <mirror>
+         <id>nexus</id>
+         <mirrorOf>*</mirrorOf>
+         <url>https://nexus.tinkar.org/repository/maven-public/</url>
+      </mirror>
+   </mirrors>
+   
+   <profiles> 
+	  <profile>
+         <id>tinkarbuild</id>
+         <repositories>
+            <repository>
+               <snapshots>
+                  <enabled>false</enabled>
+               </snapshots>
+               <id>nexus-release</id>
+               <name>libs-release</name>
+               <url>https://nexus.tinkar.org/repository/maven-releases/</url>
+            </repository>
+            <repository>
+               <id>private-assets</id>
+               <name>libs-private</name>
+               <url>https://nexus.tinkar.org/repository/private-assets/</url>
+            </repository>
+            <repository>
+               <snapshots/>
+               <id>nexus-snapshot</id>
+               <name>libs-snapshot</name>
+               <url>https://nexus.tinkar.org/repository/maven-snapshots/</url>
+            </repository>
+         </repositories>
+         <pluginRepositories>
+            <pluginRepository>
+               <id>maven-plugins</id>
+               <snapshots>
+                  <enabled>false</enabled>
+               </snapshots>
+               <name>plugins-release</name>
+               <url>https://nexus.tinkar.org/repository/maven-releases/</url>
+            </pluginRepository>
+         </pluginRepositories>
+      </profile>
+   </profiles>
+</settings>

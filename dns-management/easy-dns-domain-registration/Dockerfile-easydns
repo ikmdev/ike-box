@@ -2,15 +2,18 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
+ENV ADMIN_ZIP="12345"
+ENV ADMIN_PHONE="+999.12345678"
+
 # Install dependencies
 RUN pip install --no-cache-dir requests
+RUN pip install python-dotenv
 
 # Copy scripts and configuration files
-COPY create_domains.py delete_domains.py /app/
-COPY ../config.json domains.txt /app/
+COPY ../dns-management/easy-dns-domain-registration/. .
 
 # Make scripts executable
-RUN chmod +x /app/create_domains.py /app/delete_domains.py
+RUN chmod +x create_domains.py delete_domains.py
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
@@ -31,6 +34,6 @@ else\n\
     echo "  docker run [options] <image> delete                    # Delete all subdomains"\n\
     echo "  docker run [options] <image> delete dev test staging   # Delete only dev, test, and staging subdomains"\n\
     exit 1\n\
-fi' > /app/nginx-entrypoint.sh && chmod +x /app/nginx-entrypoint.sh
+fi' > nginx-entrypoint.sh && chmod +x nginx-entrypoint.sh
 
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["./nginx-entrypoint.sh"]
