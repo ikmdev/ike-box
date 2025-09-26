@@ -1,0 +1,41 @@
+name: Komet Version Listener
+
+run-name: Komet Version Listener - ${{ github.event.client_payLoad.version }}
+
+on:
+  repository_dispatch:
+    types: [ike-box-update]
+
+jobs:
+  komet-version-listener:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{secrets.IKMDEVOPS_PAT_TOKEN}}
+      
+      - name: update komet version
+        run:  |
+          echo " new version of komet received: ${{ github.event.client_payLoad.version }}"
+
+          sed -i '/^$/s// #BLANK_LINE_PLACEHOLDER/' docker-compose.yml
+          yq e -i '.services.komet.image = "ikebox/komet:${{github.event.client_payload.version}}"' docker-compose.yml
+          sed -i 's/ *#BLANK_LINE_PLACEHOLDER//g' docker-compose.yml
+          
+      - name: Commit and push changes
+        run: |
+          git config user.name "ikmdevops"
+          git config user.email 'devops@ikm.dev'
+          git pull -p
+          git add docker-compose.yml
+          git commit -m " Update komet to new relase version ${{ github.event.client_payload.version }}"
+          git push
+          
+
+
+
+  
+    
+
+     

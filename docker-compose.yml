@@ -23,7 +23,7 @@ services:
     image: ikebox/komet:1.56.0
     container_name: komet
     volumes:
-      - ./komet-data/:/root/Solor  
+      - ./komet-data/:/root/Solor
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/status/alive || wget --spider -q http://localhost:8080/status/alive || exit 1"]
       interval: 30s
@@ -64,18 +64,14 @@ services:
       context: .
       dockerfile: path-based/Dockerfile
     container_name: nginx-path-based
-   
     ports:
       - "${NGINX_PORT:-80}:80"
-    
     volumes:
       - ./path-based/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx-logs:/var/log/nginx
-     
     depends_on:
       - nexus
       - komet
-   
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:${NGINX_PORT:-80}/"]
       interval: 30s
