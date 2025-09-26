@@ -20,7 +20,7 @@ services:
     profiles: ["path-based", "subdomain"]
 
   komet:
-    image: sikeey-test
+    image: ikebox/komet:1.56.0
     container_name: komet
     volumes:
       - ./komet-data/:/root/Solor
