@@ -81,9 +81,7 @@ git clone https://github.com/ikmdev/ike-box.git
 ```
 ## DNS Management
 
-If you haven't created the DNS entries for the domains and subdomains that you want to use, you can do so by following 
-
-the instructions in the [DNS Management](dns-management/easy-dns-domain-registration/Easy-DNS-Mgmt.md) document. This will allow you to create the necessary DNS entries for the domains and subdomains that you want to use with this repository.
+If you haven't created the DNS entries for the domains and subdomains that you want to use, you can do so by following the instructions in the [DNS Management](dns-management/easy-dns-domain-registration/Easy-DNS-Mgmt.md) document. This will allow you to create the necessary DNS entries for the domains and subdomains that you want to use with this repository.
 
 ## Domain Configuration
 
@@ -93,8 +91,9 @@ This project uses a centralized domain configuration approach. All domain names 
 
 1. The repository includes a default `.env` file.  Please fill out the values in this files to match what your 
     expected environment and contact information will be.  To use a different domain, simply edit the `BASE_DOMAIN` 
-    value in the `.env` file. All other configurations will automatically use the updated domain.  You will **note** 
-    have a ACME_CHALLENGE at this point, so you will need to leave this blank.
+    value in the `.env` file. All other configurations will automatically use the updated domain.   
+    **Note:** 
+    You will have a ACME_CHALLENGE at this point, so you will need to leave this blank.
 
 2. Create the original DNS entries for the domain in your DNS provider.
 
