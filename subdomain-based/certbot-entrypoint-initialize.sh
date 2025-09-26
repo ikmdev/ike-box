@@ -8,7 +8,7 @@ fi
 
 while :; do
   echo "BASE DOMAIN: ${BASE_DOMAIN}"
-  certbot certonly --email devops@ikm.dev --agree-tos --no-eff-email \
+  certbot certonly --email "${ADMIN_EMAIL}" --agree-tos --no-eff-email \
     -d "${BASE_DOMAIN}" -d "*.${BASE_DOMAIN}" \
     --keep-until-expiring --preferred-challenges dns --manual
   sleep 12h & wait $!
